@@ -12,13 +12,13 @@ export type FormPropsType = {
     passwordConfirmation?: string
 };
 
-type PasswordInputType<T extends FieldValues> = {
-    register: UseFormRegister<T>
+type PasswordInputType = {
+    register: UseFormRegister<FormPropsType>
     errorMessage?:string
 
 }
 
-const PasswordInput = <T extends object>(props:PasswordInputType<T>) => {
+const PasswordInput = (props:PasswordInputType) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const passwordHandler = () => setPasswordVisible(!passwordVisible)
 
