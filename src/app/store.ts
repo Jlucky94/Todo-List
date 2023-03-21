@@ -3,13 +3,16 @@ import {ThunkDispatch} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
 import {authSlice} from "../features/auth/authSlice";
-import {profileSlice} from "../features/Profile/profileSlice";
+import {profileSlice} from "../features/profile/profileSlice";
+import {appReducer, appSlice} from "./appSlice";
 
 
 export const store = configureStore({
     reducer: {
+        app:appReducer,
         auth: authSlice.reducer,
-        profile: profileSlice.reducer
+        profile: profileSlice.reducer,
+
     },
 });
 

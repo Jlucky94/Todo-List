@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useForm} from "react-hook-form";
-import {useAppDispatch} from "../../../App/store";
+import {useAppDispatch} from "../../.././app/store";
 import {registrationTC, setNewPasswordTC} from "../authSlice";
 import {Navigate, NavLink, useNavigate, useParams} from "react-router-dom";
 import {clearInterval} from "timers";

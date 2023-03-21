@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../../App/store";
-import defaultUserAvatar from "../../images/defaultUserAvatar.png"
+import {useAppDispatch, useAppSelector} from "../.././app/store";
+import defaultUserAvatar from "../../assets/images/defaultUserAvatar.png"
 import styles from "./Profile.module.css"
 import {logoutTC} from "../auth/authSlice";
 import {Navigate} from "react-router-dom";
@@ -24,9 +24,9 @@ const Profile = () => {
             })
         });
 
-        if (!isAuth) {
-            return <Navigate to={'/login'}/>
-        }
+
+
+
         return (
             <div>
                 <h2>Personal Information</h2>

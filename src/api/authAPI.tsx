@@ -11,13 +11,13 @@ export const authAPI = {
             return response.data
         })
     },
-    login: (data: { email: string, password: string, rememberMe: boolean }) => {
+    login: (data: LoginRequestDataType) => {
         return instance.post<UserDataResponseType>(`auth/login`, data).then(response => {
             return response.data
         })
     },
     logout: () => {
-        return instance.delete(`auth/me`).then(response => {
+        return instance.delete<InfoResponseType>(`auth/me`).then(response => {
             return response.data
         })
     },
@@ -28,17 +28,20 @@ export const authAPI = {
     },
     forgot: (email: string) => {
         const message = `<div> password recovery link : <a href = 'http://localhost:3000/set-newpassword/$token$'>LINK</a></div>`
-        return instance.post(`https://neko-back.herokuapp.com/2.0/auth/forgot`, {email,message}).then(response => {
+        return instance.post<ForgotResponseType>(`https://neko-back.herokuapp.com/2.0/auth/forgot`, {
+            email,
+            message
+        }).then(response => {
             return response.data
         })
     },
-    setNewPassword: (data: {password: string, resetPasswordToken: string }) => {
-        return instance.post(`https://neko-back.herokuapp.com/2.0/auth/set-new-password`, data).then(response => {
+    setNewPassword: (data: { password: string, resetPasswordToken: string }) => {
+        return instance.post<InfoResponseType>(`https://neko-back.herokuapp.com/2.0/auth/set-new-password`, data).then(response => {
             return response.data
         })
     },
-    updateProfile: (data: {name: string, avatar: string }) => {
-        return instance.put(`auth/me`, data).then(response => {
+    updateProfile: (data: UpdateProfileRequestType) => {
+        return instance.put<UpdateProfileResponseType>(`auth/me`, data).then(response => {
             return response.data
         })
     },
@@ -62,4 +65,28 @@ export type UserDataResponseType = {
     token: string;
     tokenDeathTime: number;
     avatar: string;
+}
+export type UpdateProfileRequestType = {
+    name: string
+    avatar: string
+}
+export type UpdateProfileResponseType = UserDataResponseType & { token: string, tokenDeathTime: number }
+export type ForgotResponseType = {
+    info: string;
+    success: boolean;
+    answer: boolean;
+    html: boolean;
+}
+export type InfoResponseType = {
+    info: string
+}
+export type LoginRequestDataType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
+export type RegistrationRequestDataType = Omit<LoginRequestDataType, 'rememberMe'>
+export type SetNewPasswordRequestType = {
+    password: string
+    resetPasswordToken: string
 }

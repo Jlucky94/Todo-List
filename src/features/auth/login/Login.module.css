@@ -1,0 +1,10 @@
+.formContainer {
+    width: 50vh;
+    height: 100vh;
+    margin: auto;
+}
+
+.paperContainer {
+    width: 350px;
+    align-self: center;
+}
