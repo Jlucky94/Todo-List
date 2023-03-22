@@ -88,9 +88,9 @@ export const logoutTC = createAsyncThunk<InfoResponseType, void, AsyncConfigType
             const response = await authAPI.logout()
             thunkAPI.dispatch(loggedOut())
             thunkAPI.dispatch(userDataGot(profileInitialState.data))
-            return ({info:'Logout done'})
+            return ({info: 'Logout done'})
         } catch (e) {
-            const error= errorUtils(e)
+            const error = errorUtils(e)
             console.log(error)
             return thunkAPI.rejectWithValue(error)
         }
@@ -111,7 +111,7 @@ export const forgotTC = createAsyncThunk<ForgotResponseType, { email: string }, 
     async (data: { email: string }, thunkAPI) => {
         try {
             const response = await authAPI.forgot(data.email)
-            return {...response,info: 'Further instructions have been successfully sent to your email.'}
+            return {...response, info: 'Further instructions have been successfully sent to your email.'}
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data.error)
         }
@@ -120,13 +120,13 @@ export const setNewPasswordTC = createAsyncThunk<InfoResponseType, SetNewPasswor
 ('auth/setNewPasswordTC', async (data: SetNewPasswordRequestType, thunkAPI) => {
     try {
         const response = await authAPI.setNewPassword(data)
-        return {info:'Your password has been successfully changed.'}
+        return {info: 'Your password has been successfully changed.'}
     } catch (e: any) {
         return thunkAPI.rejectWithValue(e.response.data.error)
     }
 })
 
-export const infoFulfilled = isFulfilled(loginTC,logoutTC,registrationTC,forgotTC,setNewPasswordTC)
+export const infoFulfilled = isFulfilled(loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
 export const fulfilled = isFulfilled(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
 export const rejected = isRejected(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
-export const pending = isPending( getAuthUserDataTC, loginTC, logoutTC, setNewPasswordTC,forgotTC, registrationTC, )
+export const pending = isPending(getAuthUserDataTC, loginTC, logoutTC, setNewPasswordTC, forgotTC, registrationTC,)

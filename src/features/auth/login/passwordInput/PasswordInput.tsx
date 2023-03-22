@@ -5,13 +5,13 @@ import {FieldValues, Path} from "react-hook-form";
 import {ControllerRenderProps} from "react-hook-form/dist/types/controller";
 
 
-type PasswordInputType<T extends FieldValues,TName extends Path<T>> = {
-    field:ControllerRenderProps<T,TName>
-    label:string
-    errorMessage?:string
+type PasswordInputType<T extends FieldValues, TName extends Path<T>> = {
+    field: ControllerRenderProps<T, TName>
+    label: string
+    errorMessage?: string
 }
 
-const PasswordInput = <T extends object,TName extends Path<T> >(props:PasswordInputType<T,TName>) => {
+const PasswordInput = <T extends object, TName extends Path<T>>(props: PasswordInputType<T, TName>) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const passwordHandler = () => setPasswordVisible(!passwordVisible)
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch, useAppSelector} from "../../.././app/store";
+import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {loginTC} from "../authSlice";
 import {Link, Navigate, useNavigate} from "react-router-dom";
 import {LinkWrapper} from "../../../common/components/link/CustomLink";
@@ -12,7 +12,6 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {LoginRequestDataType} from "../../../api/authAPI";
 
 
-
 const Login = () => {
         const dispatch = useAppDispatch()
         const navigate = useNavigate()
@@ -20,7 +19,11 @@ const Login = () => {
         const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
 
 
-        const {control, handleSubmit, formState: {errors}} = useForm<LoginRequestDataType>({resolver:yupResolver(loginSchema)});
+        const {
+            control,
+            handleSubmit,
+            formState: {errors}
+        } = useForm<LoginRequestDataType>({resolver: yupResolver(loginSchema)});
         const onSubmit = handleSubmit((data) => {
             console.log(data)
             dispatch(loginTC(data))

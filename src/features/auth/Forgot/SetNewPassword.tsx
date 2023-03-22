@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch} from "../../.././app/store";
-import {registrationTC, setNewPasswordTC} from "../authSlice";
-import {Link, Navigate, NavLink, useNavigate, useParams} from "react-router-dom";
-import {clearInterval} from "timers";
-import {log} from "util";
+import {useAppDispatch} from "../../../app/store";
+import {setNewPasswordTC} from "../authSlice";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import PasswordInput from "../login/passwordInput/PasswordInput";
 import classes from "../login/Login.module.css";
 import {Button, Container, FormGroup, Paper, Typography} from "@mui/material";

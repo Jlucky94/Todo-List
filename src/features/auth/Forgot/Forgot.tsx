@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch} from "../../.././app/store";
-import {forgotTC, registrationTC} from "../authSlice";
-import {Link, NavLink, useNavigate} from "react-router-dom";
-import {Button, Container, FormControl, FormGroup, Paper, TextField, Typography} from "@mui/material";
+import {useAppDispatch} from "../../../app/store";
+import {forgotTC} from "../authSlice";
+import {Link, useNavigate} from "react-router-dom";
+import {Button, Container, FormGroup, Paper, TextField, Typography} from "@mui/material";
 import classes from "../login/Login.module.css";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {forgotSchema, loginSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {forgotSchema} from "../../../common/utils/yupResolvers/yupResolvers";
 
 export type ForgotFormData = {
     email: string
@@ -15,14 +15,12 @@ export type ForgotFormData = {
 };
 
 const Forgot = () => {
-        const navigate = useNavigate()
         const dispatch = useAppDispatch()
         const [emailIsSent, setEmailIsSent] = useState<boolean>(false)
         const {
             control,
             handleSubmit,
             formState: {errors},
-            watch
         } = useForm<ForgotFormData>({resolver: yupResolver(forgotSchema)});
         const onSubmit = handleSubmit(data => {
             const response = dispatch(forgotTC({email: data.email}))

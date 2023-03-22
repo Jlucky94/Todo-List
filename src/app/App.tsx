@@ -25,7 +25,7 @@ function App() {
     }
     return (
         <div className="App">
-            <Container  fixed style={{maxWidth: 1100}}>
+            <Container fixed style={{maxWidth: 1100}}>
                 <Routes>
                     <Route element={<PrivateRoutes/>}>
                         <Route path={"/profile"} element={<Profile/>}/>

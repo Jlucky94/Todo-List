@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ThunkAppDispatchType} from "./store";
-import {forgotTC, fulfilled, infoFulfilled, pending, rejected} from "../features/auth/authSlice";
+import {fulfilled, infoFulfilled, pending, rejected} from "../features/auth/authSlice";
 
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -32,7 +32,7 @@ export const appSlice = createSlice({
                 state.infoMessage = null
                 state.error = null
             })
-            .addMatcher(fulfilled, (state, action) => {
+            .addMatcher(fulfilled, (state) => {
                 state.status = 'succeeded'
             })
             .addMatcher(infoFulfilled, (state, action) => {

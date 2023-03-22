@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../.././app/store";
+import {useAppDispatch, useAppSelector} from "../../app/store";
 import defaultUserAvatar from "../../assets/images/defaultUserAvatar.png"
 import styles from "./Profile.module.css"
 import {logoutTC} from "../auth/authSlice";
-import {Navigate} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import {updateProfileDataTC} from "./profileSlice";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
@@ -17,7 +16,6 @@ const Profile = () => {
         const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
         const dispatch = useAppDispatch()
         const [editMode, setEditMode] = useState<boolean>(false)
-        const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
         const userData = useAppSelector(state => state.profile.data)
         const onSubmit = handleSubmit(data => {
             const promise = dispatch(updateProfileDataTC({name: data.name, avatar: ''}))
