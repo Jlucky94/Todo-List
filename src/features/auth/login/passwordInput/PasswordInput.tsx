@@ -1,34 +1,33 @@
 import React, {useState} from 'react';
 import {TextField} from "@mui/material";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import {UseFormRegister,FieldValues} from "react-hook-form";
-import {LoginFormData} from "../Login";
-import {RegistrationFormData} from "../../registration/Registration";
+import {FieldValues, Path} from "react-hook-form";
+import {ControllerRenderProps} from "react-hook-form/dist/types/controller";
 
-export type FormPropsType = {
-    email: string
-    password: string
-    rememberMe?: boolean
-    passwordConfirmation?: string
-};
 
-type PasswordInputType = {
-    register: UseFormRegister<FormPropsType>
+type PasswordInputType<T extends FieldValues,TName extends Path<T>> = {
+    field:ControllerRenderProps<T,TName>
+    label:string
     errorMessage?:string
-
 }
 
-const PasswordInput = (props:PasswordInputType) => {
+const PasswordInput = <T extends object,TName extends Path<T> >(props:PasswordInputType<T,TName>) => {
     const [passwordVisible, setPasswordVisible] = useState(false)
     const passwordHandler = () => setPasswordVisible(!passwordVisible)
 
 
     return (
         <>
-            <TextField variant={'standard'} {...props.register("password")} label={'Password'}
-                       type={passwordVisible ? 'text' : 'password'}/>
+            <TextField
+                error={!!props.errorMessage}
+                helperText={props.errorMessage}
+                variant={'outlined'}
+                label={props.label}
+                type={passwordVisible ? 'text' : 'password'}
+                value={props.field.value}
+                onChange={(e) => props.field.onChange(e)}
+            />
             <RemoveRedEyeIcon color={passwordVisible ? 'primary' : 'inherit'} onClick={passwordHandler}/>
-            <p>{props.errorMessage}</p>
         </>
     );
 };

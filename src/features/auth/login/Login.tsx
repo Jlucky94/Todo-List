@@ -1,19 +1,17 @@
-import React, {useState} from 'react';
-import {useForm} from "react-hook-form";
+import React from 'react';
+import {Controller, useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../.././app/store";
 import {loginTC} from "../authSlice";
-import {Link, Navigate, NavLink, useNavigate} from "react-router-dom";
+import {Link, Navigate, useNavigate} from "react-router-dom";
 import {LinkWrapper} from "../../../common/components/link/CustomLink";
-import {Button, Checkbox, Container, FormControl, FormControlLabel, FormGroup, Paper, TextField} from "@mui/material";
+import {Button, Checkbox, Container, FormControlLabel, FormGroup, Paper, TextField} from "@mui/material";
 import classes from './Login.module.css'
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
-import PasswordInput, {FormPropsType} from "./passwordInput/PasswordInput";
+import PasswordInput from "./passwordInput/PasswordInput";
+import {loginSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {LoginRequestDataType} from "../../../api/authAPI";
 
-export type LoginFormData = {
-    email: string
-    password: string
-    rememberMe: boolean
-};
+
 
 const Login = () => {
         const dispatch = useAppDispatch()
@@ -22,8 +20,9 @@ const Login = () => {
         const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
 
 
-        const {register, handleSubmit, formState: {errors}} = useForm<LoginFormData>();
+        const {control, handleSubmit, formState: {errors}} = useForm<LoginRequestDataType>({resolver:yupResolver(loginSchema)});
         const onSubmit = handleSubmit((data) => {
+            console.log(data)
             dispatch(loginTC(data))
         });
         const onClickHandler = () => navigate('/registration')
@@ -34,24 +33,43 @@ const Login = () => {
 
         return (
             <div>
-                <Container className={classes.formContainer} style={{display: 'flex', flexDirection:'column'}}>
+                <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
-                        <form  onSubmit={onSubmit}>
+                        <form onSubmit={onSubmit}>
                             <h2>Sign In</h2>
-                            <FormControl sx={{width: '100%'}}>
-                                <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
-                                    <TextField variant={'standard'} {...register("email")} required={true} label={'Email'}
-                                               type={'email'}/>
-                                    {/*<input {...register("email", {required: "Email is required"})} />*/}
-                                    <p>{errors.email?.message}</p>
-                                    <PasswordInput register={register} errorMessage={errors.password?.message}/>
-                                    {/*<input type={'password'}{...register("password", {required: "Password is required"})} />*/}
-
-                                    {/*<label>Remember me</label>*/}
-                                    <FormControlLabel label={'Remember me'}
-                                                      control={<Checkbox  {...register('rememberMe')}/>}/>
-
-                                    {/*<input type={"checkbox"} {...register("rememberMe")} />*/}
+                            {/*<FormControl sx={{width: '100%'}}>*/}
+                            <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
+                                <Controller
+                                    control={control}
+                                    name={'email'}
+                                    render={({field}) => (
+                                        <TextField
+                                            error={!!errors.email}
+                                            helperText={errors.email?.message}
+                                            variant={'outlined'}
+                                            label={'Email'}
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e)}
+                                        />)
+                                    }/>
+                                <Controller
+                                    control={control}
+                                    name={'password'}
+                                    render={({field}) => (
+                                        <PasswordInput
+                                            field={field}
+                                            label={'Password'}
+                                            errorMessage={errors.password?.message}
+                                        />)
+                                    }/>
+                                <Controller
+                                    control={control}
+                                    name={'rememberMe'}
+                                    render={({field}) => (
+                                        <FormControlLabel label={'Remember me'}
+                                                          control={<Checkbox
+                                                              onChange={(e) => field.onChange(e)}/>}/>)
+                                    }/>
                                 <Button type="submit" variant={'contained'}>
                                     Sign In
                                 </Button>
@@ -66,8 +84,8 @@ const Login = () => {
                                         <Link to={'/forgot'}>Forgot Password?</Link>
                                     </LinkWrapper>
                                 </div>
-                                </FormGroup>
-                            </FormControl>
+                            </FormGroup>
+                            {/*</FormControl>*/}
                         </form>
                     </Paper>
                 </Container>

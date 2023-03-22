@@ -1,11 +1,13 @@
 import React from 'react';
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {useAppDispatch, useAppSelector} from "../../.././app/store";
 import {registrationTC} from "../authSlice";
 import {Navigate, useNavigate} from "react-router-dom";
 import classes from "../login/Login.module.css";
-import {Container, Paper, TextField} from "@mui/material";
+import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
 import PasswordInput from "../login/passwordInput/PasswordInput";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {registrationSchema} from "../../../common/utils/yupResolvers/yupResolvers";
 
 export type RegistrationFormData = {
     email: string
@@ -18,8 +20,13 @@ const Registration = () => {
         const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
         const navigate = useNavigate()
         const dispatch = useAppDispatch()
-        const {register, handleSubmit, formState: {errors}, watch} = useForm<RegistrationFormData>();
+        const {
+            control,
+            handleSubmit,
+            formState: {errors},
+        } = useForm<RegistrationFormData>({resolver: yupResolver(registrationSchema)});
         const onSubmit = handleSubmit(data => {
+            console.log(data)
             const response = dispatch(registrationTC({email: data.email, password: data.password}))
             response.then(response => {
                 response.meta.requestStatus === "fulfilled" && navigate('/login')
@@ -37,34 +44,50 @@ const Registration = () => {
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
                         <h2>Sign Up</h2>
                         <form onSubmit={onSubmit}>
-                            {/*<label>Email</label>*/}
-                            {/*<input {...register("email", {required: "Email is required"})} />*/}
-                            <TextField variant={'standard'} {...register("email")} required={true} label={'Email'}
-                                       type={'email'}/>
-                            <p>{errors.email?.message}</p>
-                            {/*<label>Password</label>*/}
-                            {/*<input {...register("password", {required: "Password is required"})} />*/}
-                            <PasswordInput register={register} errorMessage={errors.password?.message}/>
-                            <p>{errors.password?.message}</p>
-                            <label>Confirm password</label>
-                            <input {...register("passwordConfirmation", {
-                                required: "Confirm your password",
-                                validate: (value: string) => {
-                                    if (watch('password') != value) {
-                                        return "Your passwords do no match";
-                                    }
-                                }
-                            })} />
-                            <p>{errors.passwordConfirmation?.message}</p>
-                            <button type="submit">
-                                Sign Up
-                            </button>
-                            <div>
-                                Already have an account?
-                            </div>
-                            <button type="button" onClick={onClickHandler}>
-                                Sign In
-                            </button>
+                            <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
+                                <Controller
+                                    control={control}
+                                    name={'email'}
+                                    render={({field}) => (
+                                        <TextField
+                                            error={!!errors.email}
+                                            helperText={errors.email?.message}
+                                            variant={'outlined'}
+                                            label={'Email'}
+                                            value={field.value}
+                                            onChange={(e) => field.onChange(e)}
+                                        />)
+                                    }/>
+                                <Controller
+                                    control={control}
+                                    name={'password'}
+                                    render={({field}) => (
+                                        <PasswordInput
+                                            field={field}
+                                            label={'Password'}
+                                            errorMessage={errors.password?.message}
+                                        />)
+                                    }/>
+                                <Controller
+                                    control={control}
+                                    name={'passwordConfirmation'}
+                                    render={({field}) => (
+                                        <PasswordInput
+                                            field={field}
+                                            label={'Confirm password'}
+                                            errorMessage={errors.passwordConfirmation?.message}
+                                        />)
+                                    }/>
+                                <Button type="submit" variant={'contained'}>
+                                    Sign Up
+                                </Button>
+                                <div>
+                                    Already have an account?
+                                </div>
+                                <Button type="button" variant={'contained'} onClick={onClickHandler}>
+                                    Sign In
+                                </Button>
+                            </FormGroup>
                         </form>
                     </Paper>
                 </Container>

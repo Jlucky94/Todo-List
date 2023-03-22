@@ -1,13 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {useAppDispatch} from "../../.././app/store";
 import {registrationTC, setNewPasswordTC} from "../authSlice";
-import {Navigate, NavLink, useNavigate, useParams} from "react-router-dom";
+import {Link, Navigate, NavLink, useNavigate, useParams} from "react-router-dom";
 import {clearInterval} from "timers";
 import {log} from "util";
+import PasswordInput from "../login/passwordInput/PasswordInput";
+import classes from "../login/Login.module.css";
+import {Button, Container, FormGroup, Paper, Typography} from "@mui/material";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {recoveryPassSchema} from "../../../common/utils/yupResolvers/yupResolvers";
 
 export type SetNewPassForm = {
     password: string
+    passwordConfirmation: string
 };
 
 const SetNewPassword = () => {
@@ -16,7 +22,11 @@ const SetNewPassword = () => {
         const navigate = useNavigate()
         const token = params.token as string
         const dispatch = useAppDispatch()
-        const {register, handleSubmit, formState: {errors}, watch} = useForm<SetNewPassForm>();
+        const {
+            control,
+            handleSubmit,
+            formState: {errors},
+        } = useForm<SetNewPassForm>({resolver: yupResolver(recoveryPassSchema)});
         const onSubmit = handleSubmit(data => {
             const response = dispatch(setNewPasswordTC({password: data.password, resetPasswordToken: token}))
             response.then(response => {
@@ -31,19 +41,49 @@ const SetNewPassword = () => {
         }, [newPasswordIsSet])
         return (
             <div>
-                <h2>Create new password</h2>
-                <form onSubmit={onSubmit}>
-                    <label>Password</label>
-                    <input {...register("password", {required: "Enter your email"})} />
-                    <div>
-                        Create new password and we will send you further instructions to email
-                    </div>
-                    <button type="submit">
-                        Set New Password
-                    </button>
-                </form>
-                {newPasswordIsSet &&
-                    <div>New password has been set, you will be redirected to login page in few seconds</div>}
+                <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
+                    <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
+                        <h2>Create new password</h2>
+                        <form onSubmit={onSubmit}>
+                            <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
+                                <Controller
+                                    control={control}
+                                    name={'password'}
+                                    render={({field}) => (
+                                        <PasswordInput
+                                            field={field}
+                                            label={'Password'}
+                                            errorMessage={errors.password?.message}
+                                        />)
+                                    }/>
+                                <Controller
+                                    control={control}
+                                    name={'passwordConfirmation'}
+                                    render={({field}) => (
+                                        <PasswordInput
+                                            field={field}
+                                            label={'Confirm password'}
+                                            errorMessage={errors.passwordConfirmation?.message}
+                                        />)
+                                    }/>
+                                <Typography component={'span'} sx={{opacity: 0.5}}>
+                                    Enter your new password
+                                </Typography>
+                                <Button type="submit" variant={'contained'}>
+                                    Set New Password
+                                </Button>
+                                <div>
+                                    Did you remember your password?
+                                </div>
+                                <Link to={'/login'}>
+                                    Try To Sign In
+                                </Link>
+                            </FormGroup>
+                        </form>
+                        {newPasswordIsSet &&
+                            <div>New password has been set, you will be redirected to login page in few seconds</div>}
+                    </Paper>
+                </Container>
             </div>
         );
     }

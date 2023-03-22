@@ -111,7 +111,7 @@ export const forgotTC = createAsyncThunk<ForgotResponseType, { email: string }, 
     async (data: { email: string }, thunkAPI) => {
         try {
             const response = await authAPI.forgot(data.email)
-            return response
+            return {...response,info: 'Further instructions have been successfully sent to your email.'}
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data.error)
         }
@@ -120,7 +120,7 @@ export const setNewPasswordTC = createAsyncThunk<InfoResponseType, SetNewPasswor
 ('auth/setNewPasswordTC', async (data: SetNewPasswordRequestType, thunkAPI) => {
     try {
         const response = await authAPI.setNewPassword(data)
-        return {info:'Further instructions have been successfully sent to your email.'}
+        return {info:'Your password has been successfully changed.'}
     } catch (e: any) {
         return thunkAPI.rejectWithValue(e.response.data.error)
     }
