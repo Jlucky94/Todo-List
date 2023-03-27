@@ -1,25 +1,27 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {PackType} from "../../api/packsAPI";
+import {useAppDispatch, useAppSelector} from "../../app/store";
+import {getPacksTC} from "./packsSlice";
 
 
 const Packs = () => {
+        const packs = useAppSelector(state => state.packs.cardPacks)
+        const dispatch = useAppDispatch()
+        useEffect(() => {
+            dispatch(getPacksTC())
+            console.log(packs)
+        }, [])
+        const createData = (pack: PackType) => ({
+            key:pack._id,
+            name: pack.name,
+            cardsCount: pack.cardsCount,
+            lastUpdate: pack.updated,
+            createdBy: pack.user_name
+        });
 
-        function createData(
-            name: string,
-            cardsCount: number,
-            updated: number,
-            userName: number,
-        ) {
-            return {name, cardsCount, updated, userName};
-        }
 
-        const data = [
-            createData('Frozen yoghurt', 159, 6.0, 24),
-            createData('Ice cream sandwich', 237, 9.0, 37),
-            createData('Eclair', 262, 16.0, 24),
-            createData('Cupcake', 305, 3.7, 67),
-            createData('Gingerbread', 356, 16.0, 49),
-        ]
+        const data = packs.map(pack => createData(pack))
 
 
         return (
@@ -45,9 +47,9 @@ const Packs = () => {
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
-                                        <TableCell align="left">{row.userName}</TableCell>
                                         <TableCell align="left">{row.cardsCount}</TableCell>
-                                        <TableCell align="left">{row.updated}</TableCell>
+                                        <TableCell align="left">{row.lastUpdate}</TableCell>
+                                        <TableCell align="left">{row.createdBy}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

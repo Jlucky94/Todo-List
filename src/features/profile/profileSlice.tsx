@@ -37,26 +37,10 @@ export const profileSlice = createSlice({
             state.data.avatar = action.payload.avatar
         }
     },
-    //
-    // extraReducers: (builder) => {
-    //     builder.addCase(getUserDataTC.pending, (state) => {
-    //         // state.isLoading = true
-    //         // state.error = null
-    //     })
-    //         .addCase(getUserDataTC.fulfilled, (state) => {
-    //             // state.isLoading = false
-    //             // state.error = null
-    //         })
-    //         .addCase(getUserDataTC.rejected, (state, action) => {
-    //             // state.isLoading = false
-    //             // state.error = action.payload as string
-    //             console.log('action:', action.payload)
-    //         })
-    // }
+
 })
 
-export default profileSlice.reducer
-export const {userDataGot, profileUpdated} = profileSlice.actions
+export const {reducer: profileReducer, actions: profileActions} = profileSlice
 
 //thunks
 //
@@ -77,7 +61,7 @@ export const updateProfileDataTC = createAsyncThunk<
     async (data: UpdateProfileRequestType, thunkAPI) => {
         try {
             const response = await authAPI.updateProfile(data)
-            thunkAPI.dispatch(profileUpdated(data))
+            thunkAPI.dispatch(profileActions.profileUpdated(data))
             return response
         } catch (e) {
             const error = errorUtils(e)

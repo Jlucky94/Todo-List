@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Controller, useForm} from "react-hook-form";
 import {useAppDispatch} from "../../../app/store";
 import {forgotTC} from "../authSlice";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {Button, Container, FormGroup, Paper, TextField, Typography} from "@mui/material";
 import classes from "../login/Login.module.css";
 import {yupResolver} from "@hookform/resolvers/yup";

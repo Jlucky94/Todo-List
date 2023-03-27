@@ -6,7 +6,7 @@ const instance = axios.create({
     baseURL: 'http://localhost:7542/2.0/cards/pack'
 })
 
-export const packAPI = {
+export const packsAPI = {
     getPacks: (params?: Partial<QueryParams>) => {
         return instance.get<GetPacksResponseType>(``, {
             params: {

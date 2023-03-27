@@ -9,7 +9,7 @@ import {
     SetNewPasswordRequestType,
     UserDataResponseType
 } from "../../api/authAPI";
-import {profileInitialState, updateProfileDataTC, userDataGot} from "../profile/profileSlice";
+import {profileActions, profileInitialState, updateProfileDataTC} from "../profile/profileSlice";
 import {appActions, AsyncConfigType} from "../../app/appSlice";
 import {errorUtils} from "../../common/utils/error-utils";
 
@@ -49,8 +49,7 @@ export const authSlice = createSlice({
     }
 })
 
-export default authSlice.reducer
-export const {loggedIn, loggedOut} = authSlice.actions
+export const {reducer: authReducer, actions: authActions} = authSlice
 
 //thunks
 export const getAuthUserDataTC = createAsyncThunk<UserDataResponseType, void, AsyncConfigType>
@@ -59,8 +58,8 @@ export const getAuthUserDataTC = createAsyncThunk<UserDataResponseType, void, As
         try {
 
             const response = await authAPI.me()
-            thunkAPI.dispatch(loggedIn())
-            thunkAPI.dispatch(userDataGot(response))
+            thunkAPI.dispatch(authActions.loggedIn())
+            thunkAPI.dispatch(profileActions.userDataGot(response))
             return response
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data.error)
@@ -73,8 +72,8 @@ export const loginTC = createAsyncThunk<UserDataResponseType & { info: string },
     async (data: LoginRequestDataType, thunkAPI) => {
         try {
             const response = await authAPI.login(data)
-            thunkAPI.dispatch(loggedIn())
-            thunkAPI.dispatch(userDataGot(response))
+            thunkAPI.dispatch(authActions.loggedIn())
+            thunkAPI.dispatch(profileActions.userDataGot(response))
             return {...response, info: 'Authorization was successful!'}
         } catch (e) {
             const error = errorUtils(e)
@@ -86,8 +85,8 @@ export const logoutTC = createAsyncThunk<InfoResponseType, void, AsyncConfigType
     async (_, thunkAPI) => {
         try {
             const response = await authAPI.logout()
-            thunkAPI.dispatch(loggedOut())
-            thunkAPI.dispatch(userDataGot(profileInitialState.data))
+            thunkAPI.dispatch(authActions.loggedOut())
+            thunkAPI.dispatch(profileActions.userDataGot(profileInitialState.data))
             return ({info: 'Logout done'})
         } catch (e) {
             const error = errorUtils(e)

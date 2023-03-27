@@ -13,7 +13,7 @@ export const appInitialState = {
 }
 export type InitialStateType = typeof appInitialState
 
-export const appSlice = createSlice({
+const appSlice = createSlice({
     name: 'app',
     initialState: appInitialState,
     reducers: {
