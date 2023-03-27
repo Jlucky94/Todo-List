@@ -7,6 +7,7 @@ import {Controller, useForm} from "react-hook-form";
 import {updateProfileDataTC} from "./profileSlice";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
 import classes from "../auth/login/Login.module.css";
+import {Link} from "react-router-dom";
 
 type ChangeProfileData = {
     name: string
@@ -28,6 +29,7 @@ const Profile = () => {
         return (
             <div>
                 <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
+                    <Link style={{textAlign:"start"}} to={'/packs'}>~~ARROW ICON~~Go to packs list</Link>
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
                         <form onSubmit={onSubmit}>
                             <h2>Personal Information</h2>
