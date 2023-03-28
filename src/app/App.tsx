@@ -32,7 +32,8 @@ function App() {
                 <Routes>
                     <Route element={<PrivateRoutes/>}>
                         <Route path={"/profile"} element={<Profile/>}/>
-                        <Route path={"/packs"} element={<Packs/>}/>
+                        <Route path={"/cards/packs"} element={<Packs/>}/>
+                        <Route path={"/cards/packs:params"} element={<Packs/>}/>
                     </Route>
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path={"/registration"} element={<Registration/>}/>
