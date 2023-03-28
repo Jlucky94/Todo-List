@@ -10,6 +10,7 @@ import PacksTable from "./table/PacksTable";
 const Packs = () => {
         const params = useParams()
         const navigate = useNavigate()
+
         const dispatch = useAppDispatch()
         const queryParams = useAppSelector(state => state.packs.params)
         const addPackHandler = () => dispatch(createPackTC({

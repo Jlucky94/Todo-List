@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import './App.css';
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Registration from "../features/auth/registration/Registration";
 import Forgot from "../features/auth/forgot/Forgot";
 import Profile from "../features/profile/Profile";
@@ -21,14 +21,13 @@ function App() {
     useEffect(() => {
         dispatch(getAuthUserDataTC())
     }, [])
-
     if (!isInit) {
         return <Preloader/>
     }
     return (
         <div className="App">
             <Header/>
-            <Container  style={{maxWidth: 1100}}>
+            <Container style={{maxWidth: 1100}}>
                 <Routes>
                     <Route element={<PrivateRoutes/>}>
                         <Route path={"/profile"} element={<Profile/>}/>
