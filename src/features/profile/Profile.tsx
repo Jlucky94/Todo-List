@@ -29,7 +29,7 @@ const Profile = () => {
         return (
             <div>
                 <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
-                    <Link style={{textAlign:"start"}} to={'/cards/packs'}>~~ARROW ICON~~Go to packs list</Link>
+                    <Link style={{textAlign: "start"}} to={'/cards/packs'}>~~ARROW ICON~~Go to packs list</Link>
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
                         <form onSubmit={onSubmit}>
                             <h2>Personal Information</h2>

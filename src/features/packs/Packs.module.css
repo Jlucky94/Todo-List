@@ -12,6 +12,7 @@
     flex-direction: row;
     justify-content: space-evenly;
 }
+
 .searchBlockContainer {
     display: flex;
     flex-direction: row;
@@ -21,9 +22,11 @@
 .search {
 
 }
+
 .filterMyAll {
 
 }
+
 .filterQuantity {
 
 }

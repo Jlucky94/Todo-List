@@ -5,7 +5,8 @@ import {createPackTC, getPacksTC} from "./packsSlice";
 import {useNavigate, useParams} from "react-router-dom";
 import SearchAndFilterBlock from "../../common/components/searchAndFilterBlock/SearchAndFilterBlock";
 import PacksTable from "./table/PacksTable";
-
+import Paginator from "../../common/components/paginator/Paginator";
+import {useDebounce} from "use-debounce";
 
 const Packs = () => {
         const params = useParams()
@@ -13,19 +14,21 @@ const Packs = () => {
 
         const dispatch = useAppDispatch()
         const queryParams = useAppSelector(state => state.packs.params)
+        const debouncedQueryParams = useDebounce(queryParams, 650)
+        const totalPacksCount = useAppSelector(state => state.packs.cardPacksTotalCount)
+        const packsPageSize = useAppSelector(state => state.packs.params.pageCount)
         const addPackHandler = () => dispatch(createPackTC({
             cardsPack: {
-                name: 'new FUcking pack',
+                name: 'new Fucking pack',
                 deckCover: '',
                 private: false
             }
         }))
-
         useEffect(() => {
+            console.log(debouncedQueryParams[0])
+            dispatch(getPacksTC())
 
-            dispatch(getPacksTC({}))
-
-        }, [])
+        }, [debouncedQueryParams[0]])
 
 
         return (
@@ -34,11 +37,13 @@ const Packs = () => {
                     <Typography component={'span'}>
                         Pack list
                     </Typography>
-                    <Button onClick={addPackHandler}>
+                    <Button variant={'contained'} onClick={addPackHandler}>
                         Add new pack
                     </Button>
                 </div>
                 <SearchAndFilterBlock/>
+                <Paginator dispatch={dispatch} totalItemsCount={totalPacksCount} pageSize={packsPageSize}
+                           currentPage={queryParams.page} portionSize={10} page={queryParams.page}/>
                 <PacksTable/>
             </Container>
         );

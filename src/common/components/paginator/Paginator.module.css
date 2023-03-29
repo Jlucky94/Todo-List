@@ -1,0 +1,7 @@
+.paginatorContainer {
+    text-align: start;
+}
+
+.selectedPage {
+    font-weight: bold;
+}

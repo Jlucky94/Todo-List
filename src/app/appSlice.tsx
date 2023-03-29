@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ThunkAppDispatchType} from "./store";
+import {AppRootStateType, ThunkAppDispatchType} from "./store";
 import {fulfilled, infoFulfilled, pending, rejected} from "../features/auth/authSlice";
 
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
@@ -52,7 +52,8 @@ export const {reducer: appReducer, actions: appActions} = appSlice
 
 export type AsyncConfigType = {
     dispatch: ThunkAppDispatchType,
-    rejectWithValue: string
+    rejectWithValue: string,
+    state: AppRootStateType
 }
 
 

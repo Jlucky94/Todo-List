@@ -1,15 +1,23 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Slider} from "@mui/material";
 import {useAppDispatch} from "../../../app/store";
 import {packsActions} from "../../../features/packs/packsSlice";
+import {useDebounce} from "use-debounce";
 
-const RangeSlider = () => {
+type SliderPropsType = {
+    min: number
+    max: number
+}
+const RangeSlider = (props: SliderPropsType) => {
     const dispatch = useAppDispatch()
-    const [value,setValue] = useState([0,50])
+    const [value, setValue] = useState([props.min, props.max])
+    const debouncedValue = useDebounce(value, 500)
     const handleChange = (event: Event, newValue: number | number[]) => {
         setValue(newValue as number[]);
-        dispatch(packsActions.setParams({min:value[0],max:value[1]}))
-    };
+    }
+    useEffect(() => {
+        dispatch(packsActions.setParams({min: value[0], max: value[1]}))
+    }, [debouncedValue[0]])
 
     return (
         <div>
@@ -19,8 +27,8 @@ const RangeSlider = () => {
                     value={value}
                     onChange={handleChange}
                     valueLabelDisplay="on"
-                    min={0}//props.min
-                    max={100}//props.max
+                    min={props.min}
+                    max={props.max}
                 />
             </Box>
         </div>
