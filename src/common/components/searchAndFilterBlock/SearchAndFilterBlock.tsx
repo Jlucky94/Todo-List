@@ -19,7 +19,6 @@ const SearchAndFilterBlock = () => {
     const switchFilterHandler = (value: string) => () => dispatch(packsActions.setParams({user_id: value, page: 0}))
 
     useEffect(() => {
-        console.log(debouncedInputValue)
         dispatch(packsActions.setParams({packName: inputValue}))
     }, [debouncedInputValue[0]])
 

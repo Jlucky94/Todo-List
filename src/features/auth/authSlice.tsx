@@ -43,7 +43,6 @@ export const authSlice = createSlice({
             .addCase(loginTC.rejected, (state, action) => {
                 state.isLoading = false
                 state.error = action.payload as string
-                console.log('action:', action.payload)
             })
 
     }
@@ -90,7 +89,6 @@ export const logoutTC = createAsyncThunk<InfoResponseType, void, AsyncConfigType
             return ({info: 'Logout done'})
         } catch (e) {
             const error = errorUtils(e)
-            console.log(error)
             return thunkAPI.rejectWithValue(error)
         }
     })

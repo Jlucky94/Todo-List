@@ -25,7 +25,6 @@ const Packs = () => {
             }
         }))
         useEffect(() => {
-            console.log(debouncedQueryParams[0])
             dispatch(getPacksTC())
 
         }, [debouncedQueryParams[0]])

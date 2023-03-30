@@ -7,7 +7,7 @@ const instance = axios.create({
 })
 
 export const packsAPI = {
-    getPacks: (params?: Partial<QueryParams>) => {
+    getPacks: (params?: Partial<PacksQueryParams>) => {
         return instance.get<GetPacksResponseType>(``, {
             params: {
                 ...params
@@ -33,7 +33,7 @@ export const packsAPI = {
     },
 }
 
-export type QueryParams = {
+export type PacksQueryParams = {
     packName: string
     min: number
     max: number

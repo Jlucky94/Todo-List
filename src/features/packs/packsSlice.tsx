@@ -8,7 +8,7 @@ import {
     GetPacksResponseType,
     packsAPI,
     PackType,
-    QueryParams,
+    PacksQueryParams,
     UpdatePackRequestType,
     UpdatePackResponseType
 } from "../../api/packsAPI";
@@ -51,7 +51,7 @@ const packsSlice = createSlice({
             state.token = action.payload.token
             state.tokenDeathTime = action.payload.tokenDeathTime
         },
-        setParams: (state, action: PayloadAction<Partial<QueryParams>>) => {
+        setParams: (state, action: PayloadAction<Partial<PacksQueryParams>>) => {
             state.params = {...state.params, ...action.payload}
         },
         deletePack: (state, action: PayloadAction<{ packId: string }>) => {

@@ -25,7 +25,6 @@ const Login = () => {
             formState: {errors}
         } = useForm<LoginRequestDataType>({resolver: yupResolver(loginSchema)});
         const onSubmit = handleSubmit((data) => {
-            console.log(data)
             dispatch(loginTC(data))
         });
         const onClickHandler = () => navigate('/registration')
