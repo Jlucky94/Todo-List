@@ -6,6 +6,7 @@ import {authReducer} from "../features/auth/authSlice";
 import {profileReducer} from "../features/profile/profileSlice";
 import {appReducer} from "./appSlice";
 import {packsReducer} from "../features/packs/packsSlice";
+import {cardsReducer} from "../features/cards/cardsSlice";
 
 
 export const store = configureStore({
@@ -13,7 +14,8 @@ export const store = configureStore({
         app: appReducer,
         auth: authReducer,
         profile: profileReducer,
-        packs: packsReducer
+        packs: packsReducer,
+        cards:cardsReducer,
 
     },
 });

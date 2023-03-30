@@ -16,8 +16,6 @@ import {
 
 export const packsInitialState = {
     cardPacks: [] as PackType[],
-    // page: 1,
-    // pageCount: 4,
     cardPacksTotalCount: 0,
     minCardsCount: 0,
     maxCardsCount: 100,
@@ -33,9 +31,6 @@ export const packsInitialState = {
         user_id: '',
         block: false,
     },
-    // pageSize: 5,
-    // totalItemsCount: 0,
-    // currentPage: 1,
 }
 
 
@@ -43,7 +38,7 @@ const packsSlice = createSlice({
     name: 'packs',
     initialState: packsInitialState,
     reducers: {
-        getPacks: (state, action: PayloadAction<GetPacksResponseType>) => {
+        setPacks: (state, action: PayloadAction<GetPacksResponseType>) => {
             state.cardPacks = action.payload.cardPacks;
             state.cardPacksTotalCount = action.payload.cardPacksTotalCount
             state.minCardsCount = action.payload.minCardsCount
@@ -53,13 +48,7 @@ const packsSlice = createSlice({
         },
         setParams: (state, action: PayloadAction<Partial<PacksQueryParams>>) => {
             state.params = {...state.params, ...action.payload}
-        },
-        deletePack: (state, action: PayloadAction<{ packId: string }>) => {
-            state.cardPacks.filter(pack => pack._id !== action.payload.packId)
-        },
-        updatePack: (state, action: PayloadAction<PackType>) => {
-            state.cardPacks.map(pack => pack._id === action.payload._id ? pack : action.payload);
-        },
+        }
     }
 })
 
@@ -76,7 +65,7 @@ export const getPacksTC = createAsyncThunk<
         const queryParams = thunkAPI.getState().packs.params
         try {
             const response = await packsAPI.getPacks(queryParams)
-            thunkAPI.dispatch(packsActions.getPacks(response))
+            thunkAPI.dispatch(packsActions.setPacks(response))
             return response
         } catch (e) {
             const error = errorUtils(e)
@@ -87,7 +76,7 @@ export const createPackTC = createAsyncThunk<
     CreatePackResponseType,
     CreatePackRequestType,
     AsyncConfigType
->('/cards/packs/getPacks',
+>('/cards/packs/createPack',
     async (data, thunkAPI) => {
         try {
             const response = await packsAPI.createPack(data)
@@ -102,11 +91,10 @@ export const deletePackTC = createAsyncThunk<
     DeletePackResponseType,
     { id: string },
     AsyncConfigType
->('/cards/packs/getPacks',
+>('/cards/packs/deletePack',
     async (data, thunkAPI) => {
         try {
             const response = await packsAPI.deletePack(data.id)
-            thunkAPI.dispatch(packsActions.deletePack({packId: response.deletedCardsPack._id}))
             thunkAPI.dispatch(getPacksTC())
             return response
         } catch (e) {
@@ -118,11 +106,10 @@ export const updatePackTC = createAsyncThunk<
     UpdatePackResponseType,
     UpdatePackRequestType,
     AsyncConfigType
->('/cards/packs/getPacks',
+>('/cards/packs/updatePack',
     async (data, thunkAPI) => {
         try {
             const response = await packsAPI.updatePack(data)
-            thunkAPI.dispatch(packsActions.updatePack(response.updatedCardsPack))
             thunkAPI.dispatch(getPacksTC())
             return response
         } catch (e) {
