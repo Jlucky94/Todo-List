@@ -9,24 +9,18 @@ type PaginatorPropsType = {
     dispatch: ThunkAppDispatchType
     totalItemsCount: number//cardPacksTotalCount
     pageSize: number//pageCount
-    currentPage: number//page
-    portionSize: number
     page: number
+    handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null,
+                       newPage: number,
+    ) => void
+    handleChangeRowsPerPage: (
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void
 }
 
 
 const Paginator = (props: PaginatorPropsType) => {
 
-    const handleChangePage = (
-        event: React.MouseEvent<HTMLButtonElement> | null,
-        newPage: number,
-    ) => props.dispatch(packsActions.setParams({page: newPage}))
-
-    const handleChangeRowsPerPage = (
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    ) => {
-        props.dispatch(packsActions.setParams({pageCount: parseInt(event.target.value), page: 0}));
-    };
 
     return (
         <div className={classes.paginatorContainer}>
@@ -43,8 +37,8 @@ const Paginator = (props: PaginatorPropsType) => {
                 }}
                 showFirstButton
                 showLastButton
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
+                onPageChange={props.handleChangePage}
+                onRowsPerPageChange={props.handleChangeRowsPerPage}
             />
         </div>
 

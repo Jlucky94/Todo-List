@@ -1,12 +1,14 @@
 import React, {useEffect} from 'react';
 import {Button, Container, Typography} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../app/store";
-import {createPackTC, getPacksTC} from "./packsSlice";
+import {createPackTC, getPacksTC, packsActions} from "./packsSlice";
 import {useNavigate, useParams} from "react-router-dom";
 import SearchAndFilterBlock from "../../common/components/searchAndFilterBlock/SearchAndFilterBlock";
 import PacksTable from "./table/PacksTable";
 import Paginator from "../../common/components/paginator/Paginator";
 import {useDebounce} from "use-debounce";
+import {cardsActions} from "../cards/cardsSlice";
+import {parseInt} from "lodash";
 
 const Packs = () => {
         const params = useParams()
@@ -24,6 +26,17 @@ const Packs = () => {
                 private: false
             }
         }))
+
+        const handleChangePage = (
+            event: React.MouseEvent<HTMLButtonElement> | null,
+            newPage: number,
+        ) => dispatch(packsActions.setParams({page: newPage}))
+        const handleChangeRowsPerPage = (
+            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => {
+            dispatch(packsActions.setParams({pageCount: parseInt(event.target.value), page: 0}));
+        };
+
         useEffect(() => {
             dispatch(getPacksTC())
 
@@ -42,7 +55,7 @@ const Packs = () => {
                 </div>
                 <SearchAndFilterBlock/>
                 <Paginator dispatch={dispatch} totalItemsCount={totalPacksCount} pageSize={packsPageSize}
-                           currentPage={queryParams.page} portionSize={10} page={queryParams.page}/>
+                           page={queryParams.page} handleChangePage={handleChangePage} handleChangeRowsPerPage={handleChangeRowsPerPage}/>
                 <PacksTable/>
             </Container>
         );

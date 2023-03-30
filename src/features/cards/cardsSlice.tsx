@@ -2,23 +2,15 @@ import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AsyncConfigType} from "../../app/appSlice";
 import {errorUtils} from "../../common/utils/error-utils";
 import {
-    CreatePackRequestType,
-    CreatePackResponseType,
-    DeletePackResponseType,
-    GetPacksResponseType,
-    packsAPI,
-    PackType,
-    PacksQueryParams,
-    UpdatePackRequestType,
-    UpdatePackResponseType
-} from "../../api/packsAPI";
-import {
     cardsAPI,
     CardsQueryParams,
     CardType,
     CreateCardRequestType,
-    CreateCardResponseType, DeleteCardResponseType,
-    GetCardsResponseType, UpdateCardRequestType, UpdateCardResponseType
+    CreateCardResponseType,
+    DeleteCardResponseType,
+    GetCardsResponseType,
+    UpdateCardRequestType,
+    UpdateCardResponseType
 } from "../../api/cardsAPI";
 
 
@@ -36,7 +28,7 @@ export const cardsInitialState = {
     params: {
         cardsPack_id: '',
         min: 0,
-        max: 100,
+        max: 5,
         sortCards: '',
         page: 0,
         pageCount: 4,
@@ -52,6 +44,7 @@ const cardsSlice = createSlice({
     reducers: {
         setCards: (state, action: PayloadAction<GetCardsResponseType>) => {
             state.cards = action.payload.cards;
+            state.packUserId=action.payload.packUserId
             state.cardsTotalCount = action.payload.cardsTotalCount
             state.packName=action.payload.packName
             state.packPrivate=action.payload.packPrivate
@@ -76,7 +69,7 @@ export const getCardsTC = createAsyncThunk<
     GetCardsResponseType,
     void,
     AsyncConfigType
->('/cards/cards/getPacks',
+>('/cards/card/getCards',
     async (_, thunkAPI) => {
         const queryParams = thunkAPI.getState().cards.params
         try {
@@ -92,7 +85,7 @@ export const createCardTC = createAsyncThunk<
     CreateCardResponseType,
     CreateCardRequestType,
     AsyncConfigType
->('/cards/cards/getPacks',
+>('/cards/card/createCard',
     async (data, thunkAPI) => {
         try {
             const response = await cardsAPI.createCard(data)
@@ -107,7 +100,7 @@ export const deleteCardTC = createAsyncThunk<
     DeleteCardResponseType,
     { id: string },
     AsyncConfigType
->('/cards/cards/deleteCard',
+>('/cards/card/deleteCard',
     async (data, thunkAPI) => {
         try {
             const response = await cardsAPI.deleteCard(data.id)
@@ -122,7 +115,7 @@ export const updateCardTC = createAsyncThunk<
     UpdateCardResponseType,
     UpdateCardRequestType,
     AsyncConfigType
->('/cards/cards/updateCard',
+>('/cards/card/updateCard',
     async (data, thunkAPI) => {
         try {
             const response = await cardsAPI.updateCard(data)

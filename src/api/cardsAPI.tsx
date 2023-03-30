@@ -86,12 +86,12 @@ export type CreateCardRequestCardType = {
 	cardsPack_id: string;
 	question: string;
 	answer: string;
-	grade: string;
-	shots: string;
-	answerImg: string;
-	questionImg: string;
-	questionVideo: string;
-	answerVideo: string;
+	grade?: string;
+	shots?: string;
+	answerImg?: string;
+	questionImg?: string;
+	questionVideo?: string;
+	answerVideo?: string;
 }
 export type CreateCardResponseType = {
 	newCard: CardType;
@@ -104,7 +104,7 @@ export type DeleteCardResponseType = {
 	tokenDeathTime: number;
 }
 export type UpdateCardRequestType = {
-	card: UpdateCardRequestTypeCard;
+	card: Partial<UpdateCardRequestTypeCard>;
 }
 export type UpdateCardRequestTypeCard = {
 	_id: string;

@@ -14,6 +14,7 @@ import PrivateRoutes from "../routes/PrivateRoutes";
 import {Container} from "@mui/material";
 import Header from "../common/components/header/Header";
 import Packs from "../features/packs/Packs";
+import Cards from "../features/cards/Cards";
 
 function App() {
     const isInit = useAppSelector(state => state.app.isInit)
@@ -32,7 +33,8 @@ function App() {
                     <Route element={<PrivateRoutes/>}>
                         <Route path={"/profile"} element={<Profile/>}/>
                         <Route path={"/cards/packs"} element={<Packs/>}/>
-                        <Route path={"/cards/packs:params"} element={<Packs/>}/>
+                        <Route path={"/cards/packs/:params"} element={<Packs/>}/>
+                        <Route path={"/cards/pack/:packId"} element={<Cards/>}/>
                     </Route>
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path={"/registration"} element={<Registration/>}/>

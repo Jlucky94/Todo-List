@@ -5,23 +5,24 @@ import {PackType, UpdatePackRequestType} from "../../../api/packsAPI";
 import SchoolIcon from '@mui/icons-material/School';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import {deletePackTC, updatePackTC} from "../cardsSlice";
+import {CardType, UpdateCardRequestType} from "../../../api/cardsAPI";
+import {deleteCardTC, updateCardTC} from "../cardsSlice";
 
-const PacksTable = () => {
+const CardsTable = () => {
     const dispatch = useAppDispatch()
-    const packs = useAppSelector(state => state.packs.cardPacks)
+    const cards = useAppSelector(state => state.cards.cards)
     const userId = useAppSelector(state => state.profile.data._id)
-    const createData = (pack: PackType) => ({
-        key: pack._id,
-        name: pack.name,
-        cards: pack.cardsCount,
-        updated: pack.updated,
-        creator: pack.user_name,
-        userId: pack.user_id
+    const createData = (card: CardType) => ({
+        key: card._id,
+        question: card.question,
+        answer: card.answer,
+        updated: card.updated,
+        grade: card.grade,
+        userId: card.user_id
     });
-    const rows = packs.map(pack => createData(pack))
-    const deletePackHandler = (id: string) => () => dispatch(deletePackTC({id}))
-    const updatePackHandler = (data: UpdatePackRequestType) => () => dispatch(updatePackTC(data))
+    const rows = cards.map(card => createData(card))
+    const deleteCardHandler = (id: string) => () => dispatch(deleteCardTC({id}))
+    const updateCardHandler = (data: UpdateCardRequestType) => () => dispatch(updateCardTC(data))
 
     return (
         <div>
@@ -29,11 +30,10 @@ const PacksTable = () => {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="left">Cards</TableCell>
+                            <TableCell>Question</TableCell>
+                            <TableCell align="left">Answer</TableCell>
                             <TableCell align="left">Last update</TableCell>
-                            <TableCell align="left">Created by</TableCell>
-                            <TableCell align="left">Actions</TableCell>
+                            <TableCell align="left">Grade</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -42,27 +42,23 @@ const PacksTable = () => {
                                 key={row.key}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {row.question}
                                 </TableCell>
-                                <TableCell align="left">{row.cards}</TableCell>
+                                <TableCell align="left">{row.answer}</TableCell>
                                 <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
-                                <TableCell align="left">{row.creator}</TableCell>
                                 <TableCell align="left">
-                                    <Icon>
-                                        <SchoolIcon/>
-                                    </Icon>
+                                    {row.grade}
                                     {userId === row.userId && <Icon>
-                                        <ModeEditIcon onClick={updatePackHandler({
-                                            cardsPack: {
+                                        <ModeEditIcon onClick={updateCardHandler({
+                                            card: {
                                                 _id: row.key,
-                                                name: 'newNamePack',
-                                                grade: 2,
-                                                private: false
+                                                question: 'updated question',
+                                                answer: 'updated answer',
                                             }
                                         })}/>
                                     </Icon>}
                                     {userId === row.userId && <Icon>
-                                        <DeleteSweepIcon onClick={deletePackHandler(row.key)}/>
+                                        <DeleteSweepIcon onClick={deleteCardHandler(row.key)}/>
                                     </Icon>}
                                 </TableCell>
                             </TableRow>
@@ -74,4 +70,4 @@ const PacksTable = () => {
     );
 };
 
-export default PacksTable;
+export default CardsTable;

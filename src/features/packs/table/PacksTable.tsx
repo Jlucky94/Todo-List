@@ -6,13 +6,16 @@ import SchoolIcon from '@mui/icons-material/School';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import {deletePackTC, updatePackTC} from "../packsSlice";
+import {useNavigate, useParams} from "react-router-dom";
+import {cardsActions} from "../../cards/cardsSlice";
 
 const PacksTable = () => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const packs = useAppSelector(state => state.packs.cardPacks)
     const userId = useAppSelector(state => state.profile.data._id)
     const createData = (pack: PackType) => ({
-        key: pack._id,
+        packId: pack._id,
         name: pack.name,
         cards: pack.cardsCount,
         updated: pack.updated,
@@ -22,7 +25,9 @@ const PacksTable = () => {
     const rows = packs.map(pack => createData(pack))
     const deletePackHandler = (id: string) => () => dispatch(deletePackTC({id}))
     const updatePackHandler = (data: UpdatePackRequestType) => () => dispatch(updatePackTC(data))
-
+    const packOnClickHandler = (packId: string) => () => {
+        navigate('/cards/pack/' + packId)
+    }
     return (
         <div>
             <TableContainer component={Paper}>
@@ -39,9 +44,10 @@ const PacksTable = () => {
                     <TableBody>
                         {rows.map((row) => (
                             <TableRow
-                                key={row.key}
+                                key={row.packId}
                             >
-                                <TableCell component="th" scope="row">
+                                <TableCell component="th" scope="row"
+                                           onClick={packOnClickHandler(row.packId)}>
                                     {row.name}
                                 </TableCell>
                                 <TableCell align="left">{row.cards}</TableCell>
@@ -54,7 +60,7 @@ const PacksTable = () => {
                                     {userId === row.userId && <Icon>
                                         <ModeEditIcon onClick={updatePackHandler({
                                             cardsPack: {
-                                                _id: row.key,
+                                                _id: row.packId,
                                                 name: 'newNamePack',
                                                 grade: 2,
                                                 private: false
@@ -62,7 +68,7 @@ const PacksTable = () => {
                                         })}/>
                                     </Icon>}
                                     {userId === row.userId && <Icon>
-                                        <DeleteSweepIcon onClick={deletePackHandler(row.key)}/>
+                                        <DeleteSweepIcon onClick={deletePackHandler(row.packId)}/>
                                     </Icon>}
                                 </TableCell>
                             </TableRow>
