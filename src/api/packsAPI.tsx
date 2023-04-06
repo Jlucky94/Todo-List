@@ -1,9 +1,10 @@
 import axios, {AxiosResponse} from "axios";
+import {currentURL, localURL} from "./authAPI";
 
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:7542/2.0/cards/pack/'
+    baseURL: currentURL+'cards/pack/'
 })
 
 export const packsAPI = {
@@ -65,7 +66,6 @@ export type UpdatePackRequestType = {
         _id: string;
         name: string;
         private: boolean;
-        grade: number;
     };
 }
 

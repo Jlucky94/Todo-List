@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from "../../app/store";
-import defaultUserAvatar from "../../assets/images/defaultUserAvatar.png"
+import {useAppDispatch, useAppSelector} from "app/store";
+import defaultUserAvatar from "assets/images/defaultUserAvatar.png"
 import styles from "./Profile.module.css"
-import {logoutTC} from "../auth/authSlice";
+import {logoutTC} from "features/auth/authSlice";
 import {Controller, useForm} from "react-hook-form";
 import {updateProfileDataTC} from "./profileSlice";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
-import classes from "../auth/login/Login.module.css";
+import classes from "features/auth/login/Login.module.css";
 import {Link} from "react-router-dom";
 
 type ChangeProfileData = {
@@ -14,17 +14,20 @@ type ChangeProfileData = {
 };
 
 const Profile = () => {
-        const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
         const dispatch = useAppDispatch()
+        const isLoading = useAppSelector(state => state.app.status)
         const [editMode, setEditMode] = useState<boolean>(false)
         const userData = useAppSelector(state => state.profile.data)
+        const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
+
         const onSubmit = handleSubmit(data => {
             const promise = dispatch(updateProfileDataTC({name: data.name, avatar: ''}))
             promise.then((response) => {
                 response.meta.requestStatus === "fulfilled" && setEditMode(false)
             })
         });
-
+        const logoutHandler = () => dispatch(logoutTC())
+        const editModeHandler = () => setEditMode(true)
 
         return (
             <div>
@@ -50,7 +53,12 @@ const Profile = () => {
                                                 />)
                                             }/>
                                         <p>{errors.name?.message}</p>
-                                        <Button type={"submit"} variant={"contained"}>Save</Button>
+                                        <Button
+                                            type={"submit"}
+                                            variant={"contained"}
+                                            disabled={isLoading === 'loading'}>
+                                            Save
+                                        </Button>
                                     </>
                                     : <div>
                                         <h3>{userData.name}</h3>
@@ -59,10 +67,15 @@ const Profile = () => {
                                     {userData.email}
                                 </div>
                                 {!editMode &&
-                                    <Button variant={"contained"} onClick={() => setEditMode(true)}>Edit name</Button>}
-                                <Button variant={"contained"} onClick={() => {
-                                    dispatch(logoutTC())
-                                }}>
+                                    <Button variant={"contained"}
+                                            onClick={editModeHandler}
+                                    >
+                                        Edit name
+                                    </Button>}
+                                <Button
+                                    variant={"contained"}
+                                    onClick={logoutHandler}
+                                    disabled={isLoading === 'loading'}>
                                     Log Out
                                 </Button>
                             </FormGroup>

@@ -7,6 +7,8 @@ import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import {CardType, UpdateCardRequestType} from "../../../api/cardsAPI";
 import {deleteCardTC, updateCardTC} from "../cardsSlice";
+import {DeleteCardModal} from "features/packs/modals/deleteCardModal";
+import {EditCardModal} from "features/packs/modals/editCardModal";
 
 const CardsTable = () => {
     const dispatch = useAppDispatch()
@@ -48,21 +50,13 @@ const CardsTable = () => {
                                 <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
                                 <TableCell align="left">
                                     {row.grade}
-                                    {userId === row.userId && <Icon>
-                                        <ModeEditIcon onClick={updateCardHandler({
-                                            card: {
-                                                _id: row.key,
-                                                question: 'updated question',
-                                                answer: 'updated answer',
-                                            }
-                                        })}/>
-                                    </Icon>}
-                                    {userId === row.userId && <Icon>
-                                        <DeleteSweepIcon onClick={deleteCardHandler(row.key)}/>
-                                    </Icon>}
+                                    {userId === row.userId &&
+                                        <EditCardModal cardId={row.key} question={row.question} answer={row.answer}/>}
+                                    {userId === row.userId &&
+                                        <DeleteCardModal cardId={row.key} cardName={row.question}/>}
                                 </TableCell>
                             </TableRow>
-                        ))}
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>

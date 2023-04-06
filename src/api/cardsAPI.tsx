@@ -1,9 +1,10 @@
 import axios, {AxiosResponse} from "axios";
+import {currentURL, localURL} from "./authAPI";
 
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:7542/2.0/cards/card/'
+    baseURL: currentURL+'cards/card/'
 })
 
 export const cardsAPI = {

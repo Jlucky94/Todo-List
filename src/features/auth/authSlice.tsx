@@ -8,10 +8,10 @@ import {
     RegistrationRequestDataType,
     SetNewPasswordRequestType,
     UserDataResponseType
-} from "../../api/authAPI";
+} from "api/authAPI";
 import {profileActions, profileInitialState, updateProfileDataTC} from "../profile/profileSlice";
-import {appActions, AsyncConfigType} from "../../app/appSlice";
-import {errorUtils} from "../../common/utils/error-utils";
+import {appActions, AsyncConfigType} from "app/appSlice";
+import {errorUtils} from "common/utils/error-utils";
 
 export const initialState = {
     isAuth: false,
@@ -124,6 +124,6 @@ export const setNewPasswordTC = createAsyncThunk<InfoResponseType, SetNewPasswor
 })
 
 export const infoFulfilled = isFulfilled(loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
-export const fulfilled = isFulfilled(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
-export const rejected = isRejected(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC)
-export const pending = isPending(getAuthUserDataTC, loginTC, logoutTC, setNewPasswordTC, forgotTC, registrationTC,)
+export const fulfilled = isFulfilled(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC,updateProfileDataTC)
+export const rejected = isRejected(updateProfileDataTC, getAuthUserDataTC, loginTC, logoutTC, registrationTC, forgotTC, setNewPasswordTC,updateProfileDataTC)
+export const pending = isPending(getAuthUserDataTC, loginTC, logoutTC, setNewPasswordTC, forgotTC, registrationTC,updateProfileDataTC)

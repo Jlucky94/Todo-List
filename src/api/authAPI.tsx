@@ -1,9 +1,10 @@
 import axios from "axios";
-
+export const localURL = 'http://localhost:7542/2.0/'
+export const currentURL = process.env.REACT_APP_BACK_URL || localURL
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: 'http://localhost:7542/2.0/'
+    baseURL: currentURL
 })
 export const authAPI = {
     me: () => {

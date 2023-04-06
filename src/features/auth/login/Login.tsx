@@ -1,21 +1,22 @@
 import React from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {loginTC} from "../authSlice";
+import {useAppDispatch, useAppSelector} from "app/store";
 import {Link, Navigate, useNavigate} from "react-router-dom";
-import {LinkWrapper} from "../../../common/components/link/CustomLink";
+import {LinkWrapper} from "common/components/link/CustomLink";
 import {Button, Checkbox, Container, FormControlLabel, FormGroup, Paper, TextField} from "@mui/material";
 import classes from './Login.module.css'
 import PasswordInput from "./passwordInput/PasswordInput";
-import {loginSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {loginSchema} from "common/utils/yupResolvers/yupResolvers";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {LoginRequestDataType} from "../../../api/authAPI";
+import {LoginRequestDataType} from "api/authAPI";
+import {loginTC} from "features/auth/authSlice";
 
 
 const Login = () => {
         const dispatch = useAppDispatch()
         const navigate = useNavigate()
 
+        const isLoading = useAppSelector(state => state.app.status)
         const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
 
 
@@ -72,13 +73,14 @@ const Login = () => {
                                                           control={<Checkbox
                                                               onChange={(e) => field.onChange(e)}/>}/>)
                                     }/>
-                                <Button type="submit" variant={'contained'}>
+                                <Button type="submit" variant={'contained'} disabled={isLoading === 'loading'}>
                                     Sign In
                                 </Button>
                                 <div>
                                     Don't have an account?
                                 </div>
-                                <Button type="button" variant={'contained'} onClick={onClickHandler}>
+                                <Button type="button" variant={'contained'} onClick={onClickHandler}
+                                        >
                                     Sign Up
                                 </Button>
                                 <div>

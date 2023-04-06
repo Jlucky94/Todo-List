@@ -1,14 +1,12 @@
 import React from 'react';
 import classes from './Paginator.module.css'
 import {ThunkAppDispatchType} from "../../../app/store";
-import {packsActions} from "../../../features/packs/packsSlice";
 import {TablePagination} from "@mui/material";
-import {parseInt} from "lodash";
 
 type PaginatorPropsType = {
     dispatch: ThunkAppDispatchType
-    totalItemsCount: number//cardPacksTotalCount
-    pageSize: number//pageCount
+    totalItemsCount: number
+    pageSize: number
     page: number
     handleChangePage: (event: React.MouseEvent<HTMLButtonElement> | null,
                        newPage: number,

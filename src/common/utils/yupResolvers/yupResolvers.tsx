@@ -17,3 +17,10 @@ export const recoveryPassSchema = yup.object().shape({
 export const forgotSchema = yup.object().shape({
     email: yup.string().email('Enter valid email address').required('This field is required'),
 })
+export const addNewPackSchema = yup.object().shape({
+    packName: yup.string().required('Pack name can not be empty, please enter new name'),
+})
+export const addNewCardSchema = yup.object().shape({
+    question: yup.string().required('Please enter your question'),
+    answer: yup.string().required('Please enter answer for question'),
+})

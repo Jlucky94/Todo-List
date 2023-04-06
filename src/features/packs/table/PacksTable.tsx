@@ -1,19 +1,36 @@
 import React from 'react';
-import {Icon, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {
+    Icon,
+    Paper, Skeleton, Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TableSortLabel
+} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../../app/store";
 import {PackType, UpdatePackRequestType} from "../../../api/packsAPI";
 import SchoolIcon from '@mui/icons-material/School';
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import {deletePackTC, updatePackTC} from "../packsSlice";
-import {useNavigate, useParams} from "react-router-dom";
-import {cardsActions} from "../../cards/cardsSlice";
+import {deletePackTC, packsActions, updatePackTC} from "../packsSlice";
+import {useNavigate} from "react-router-dom";
+import classes from '../Packs.module.css'
+import {EditPackModal} from "features/packs/modals/editPackModal";
+import {DeletePackModal} from "features/packs/modals/deletePackModal";
 
+export type HeadCellType = {
+    id: string
+    label: string
+}
 const PacksTable = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const packs = useAppSelector(state => state.packs.cardPacks)
     const userId = useAppSelector(state => state.profile.data._id)
+    const sortPacks = useAppSelector(state => state.packs.params.sortPacks)
     const createData = (pack: PackType) => ({
         packId: pack._id,
         name: pack.name,
@@ -28,52 +45,65 @@ const PacksTable = () => {
     const packOnClickHandler = (packId: string) => () => {
         navigate('/cards/pack/' + packId)
     }
+
+    const arr = [
+        {id: 'name', label: 'Name'},
+        {id: 'cardsCount', label: 'Cards'},
+        {id: 'updated', label: 'Last update'},
+        {id: 'user_name', label: 'Created by'},
+    ]
+    const createHeaderCellWithLabel = (header: HeadCellType) => (
+        <TableCell key={header.id} style={{fontWeight: 750}}>
+            {header.label}
+            <TableSortLabel
+                direction={sortPacks === '0' + header.id ? "asc" : "desc"}
+                active={sortPacks.includes(header.id)}
+                onClick={() => dispatch(packsActions.setParams({sortPacks: sortPacks === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
+        </TableCell>)
+
     return (
         <div>
             <TableContainer component={Paper}>
                 <Table sx={{minWidth: 650}} aria-label="simple table">
-                    <TableHead>
+                    <TableHead className={classes.headerRow}>
                         <TableRow>
-                            <TableCell>Name</TableCell>
-                            <TableCell align="left">Cards</TableCell>
-                            <TableCell align="left">Last update</TableCell>
-                            <TableCell align="left">Created by</TableCell>
-                            <TableCell align="left">Actions</TableCell>
+                            {arr.map(header => createHeaderCellWithLabel(header))}
+                            <TableCell align="left" style={{fontWeight: 750}}>
+                                Actions
+                            </TableCell>
                         </TableRow>
                     </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <TableRow
-                                key={row.packId}
-                            >
-                                <TableCell component="th" scope="row"
-                                           onClick={packOnClickHandler(row.packId)}>
-                                    {row.name}
-                                </TableCell>
-                                <TableCell align="left">{row.cards}</TableCell>
-                                <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
-                                <TableCell align="left">{row.creator}</TableCell>
-                                <TableCell align="left">
-                                    <Icon>
-                                        <SchoolIcon/>
-                                    </Icon>
-                                    {userId === row.userId && <Icon>
-                                        <ModeEditIcon onClick={updatePackHandler({
-                                            cardsPack: {
-                                                _id: row.packId,
-                                                name: 'newNamePack',
-                                                grade: 2,
-                                                private: false
-                                            }
-                                        })}/>
-                                    </Icon>}
-                                    {userId === row.userId && <Icon>
-                                        <DeleteSweepIcon onClick={deletePackHandler(row.packId)}/>
-                                    </Icon>}
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
+                    {packs.length ? <TableBody>
+                            {rows.map((row) => (
+                                <TableRow hover
+                                          key={row.packId}
+                                >
+                                    <TableCell component="th" scope="row" sx={{cursor: 'pointer'}}
+                                               onClick={packOnClickHandler(row.packId)}>
+                                        {row.name}
+                                    </TableCell>
+                                    <TableCell align="left">{row.cards}</TableCell>
+                                    <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
+                                    <TableCell align="left">{row.creator}</TableCell>
+                                    <TableCell align="left">
+                                        <Icon sx={{cursor: 'pointer'}}>
+                                            <SchoolIcon/>
+                                        </Icon>
+                                        {userId === row.userId && <EditPackModal packId={row.packId} packName={row.name}/>}
+                                        {userId === row.userId &&
+                                            <DeletePackModal packId={row.packId} packName={row.name}/>}
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        :
+                        <Stack spacing={1}>
+                            <Skeleton variant="rectangular" width={650}/>
+                            <Skeleton variant="rectangular" width={650}/>
+                            <Skeleton variant="rectangular" width={650}/>
+                            <Skeleton variant="rectangular" width={650}/>
+                        </Stack>
+                    }
                 </Table>
             </TableContainer>
         </div>

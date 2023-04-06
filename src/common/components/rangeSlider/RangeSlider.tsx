@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Box, Slider} from "@mui/material";
-import {useAppDispatch} from "../../../app/store";
-import {packsActions} from "../../../features/packs/packsSlice";
+import {useAppDispatch, useAppSelector} from "app/store";
+import {packsActions} from "features/packs/packsSlice";
 import {useDebounce} from "use-debounce";
 
 type SliderPropsType = {
@@ -12,14 +12,18 @@ const RangeSlider = (props: SliderPropsType) => {
     const dispatch = useAppDispatch()
     const [value, setValue] = useState([props.min, props.max])
     const debouncedValue = useDebounce(value, 500)
-    const handleChange = (event: Event, newValue: number | number[]) => {
+    const min = useAppSelector(state => state.packs.params.min)
+    const max = useAppSelector(state => state.packs.params.max)
+    const handleChange = (event: React.SyntheticEvent | Event, newValue: number | Array<number>) => {
         setValue(newValue as number[]);
     }
     useEffect(() => {
         console.log(debouncedValue[0])
-        dispatch(packsActions.setParams({min: value[0], max: value[1]}))
+        dispatch(packsActions.setParams({min: value[0], max: value[1],page:1    }))
     }, [...debouncedValue[0]])
-
+    useEffect(() => {
+        setValue([min, max])
+    }, [min, max])
     return (
         <div>
             <Box sx={{width: 300}}>

@@ -1,13 +1,13 @@
 import React from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch, useAppSelector} from "../../.././app/store";
-import {registrationTC} from "../authSlice";
+import {useAppDispatch, useAppSelector} from "app/store";
 import {Navigate, useNavigate} from "react-router-dom";
-import classes from "../login/Login.module.css";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
-import PasswordInput from "../login/passwordInput/PasswordInput";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {registrationSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {registrationSchema} from "common/utils/yupResolvers/yupResolvers";
+import PasswordInput from "features/auth/login/passwordInput/PasswordInput";
+import {registrationTC} from "features/auth/authSlice";
+import classes from "features/auth/login/Login.module.css";
 
 export type RegistrationFormData = {
     email: string
@@ -17,7 +17,8 @@ export type RegistrationFormData = {
 };
 
 const Registration = () => {
-        const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
+        const isAuth = useAppSelector(state => state.auth.isAuth)
+        const isLoading = useAppSelector(state => state.app.status)
         const navigate = useNavigate()
         const dispatch = useAppDispatch()
         const {
@@ -26,7 +27,6 @@ const Registration = () => {
             formState: {errors},
         } = useForm<RegistrationFormData>({resolver: yupResolver(registrationSchema)});
         const onSubmit = handleSubmit(data => {
-            console.log(data)
             const response = dispatch(registrationTC({email: data.email, password: data.password}))
             response.then(response => {
                 response.meta.requestStatus === "fulfilled" && navigate('/login')
@@ -78,7 +78,7 @@ const Registration = () => {
                                             errorMessage={errors.passwordConfirmation?.message}
                                         />)
                                     }/>
-                                <Button type="submit" variant={'contained'}>
+                                <Button type="submit" variant={'contained'} disabled={isLoading==='loading'}>
                                     Sign Up
                                 </Button>
                                 <div>

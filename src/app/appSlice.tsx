@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppRootStateType, ThunkAppDispatchType} from "./store";
-import {fulfilled, infoFulfilled, pending, rejected} from "../features/auth/authSlice";
+import {fulfilled, infoFulfilled, pending, rejected} from "features/auth/authSlice";
 
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
