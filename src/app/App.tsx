@@ -15,6 +15,7 @@ import Registration from "features/auth/registration/Registration";
 import Forgot from "features/auth/forgot/Forgot";
 import SetNewPassword from "features/auth/forgot/SetNewPassword";
 import PrivateRoutes from "routes/PrivateRoutes";
+import LearnCards from "features/learnCards/LearnCards";
 
 function App() {
     const isInit = useAppSelector(state => state.app.isInit)
@@ -35,6 +36,7 @@ function App() {
                         <Route path={"/cards/packs"} element={<Packs/>}/>
                         <Route path={"/cards/packs/:params"} element={<Packs/>}/>
                         <Route path={"/cards/pack/:packId"} element={<Cards/>}/>
+                        <Route path={"/learn/:packId"} element={<LearnCards/>}/>
                     </Route>
                     <Route path={"/login"} element={<Login/>}/>
                     <Route path={"/registration"} element={<Registration/>}/>

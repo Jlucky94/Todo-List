@@ -22,7 +22,8 @@ export const DeleteCardModal: FC<Props> = ({cardName, cardId}) => {
     return (
         <BasicModal
             title={'Delete Card'}
-            label={<DeleteSweepIcon sx={{cursor: 'pointer'}}/>}
+            type={'icon'}
+            label={<DeleteSweepIcon/>}
             children={
                 <>
                     <div>

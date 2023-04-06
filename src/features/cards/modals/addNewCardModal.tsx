@@ -42,6 +42,7 @@ export const AddNewCardModal: FC<Props> = ({cardPack_id}) => {
         <BasicModal
             title={'Add new card'}
             label={'Add new card'}
+            type={"button"}
             children={
                 <form onSubmit={onSubmit}>
                     <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>

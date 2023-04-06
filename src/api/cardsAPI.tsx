@@ -1,10 +1,10 @@
 import axios, {AxiosResponse} from "axios";
-import {currentURL, localURL} from "./authAPI";
+import {currentURL} from "./authAPI";
 
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: currentURL+'cards/card/'
+    baseURL: currentURL + 'cards/card/'
 })
 
 export const cardsAPI = {
@@ -27,8 +27,13 @@ export const cardsAPI = {
             return response.data
         })
     },
-    updateCard: (data:UpdateCardRequestType ) => {
+    updateCard: (data: UpdateCardRequestType) => {
         return instance.put<UpdateCardRequestType, AxiosResponse<UpdateCardResponseType>>(``, data).then(response => {
+            return response.data
+        })
+    },
+    rateCard: (data: RateCardRequestType) => {
+        return instance.put<RateCardRequestType, AxiosResponse<RateCardResponseType>>(currentURL + 'cards/grade/', data).then(response => {
             return response.data
         })
     },
@@ -41,87 +46,98 @@ export type CardsQueryParams = {
     sortCards: string
     page: number
     pageCount: number
-    cardAnswer:string
-    cardQuestion:string
+    cardAnswer: string
+    cardQuestion: string
 }
 export type GetCardsResponseType = {
-	cards: CardType[];
-	packUserId: string;
-	packName: string;
-	packPrivate: boolean;
-	packDeckCover: string;
-	packCreated: string;
-	packUpdated: string;
-	page: number;
-	pageCount: number;
-	cardsTotalCount: number;
-	minGrade: number;
-	maxGrade: number;
-	token: string;
-	tokenDeathTime: number;
+    cards: CardType[];
+    packUserId: string;
+    packName: string;
+    packPrivate: boolean;
+    packDeckCover: string;
+    packCreated: string;
+    packUpdated: string;
+    page: number;
+    pageCount: number;
+    cardsTotalCount: number;
+    minGrade: number;
+    maxGrade: number;
+    token: string;
+    tokenDeathTime: number;
 }
 export type CardType = {
-	_id: string;
-	cardsPack_id: string;
-	user_id: string;
-	answer: string;
-	question: string;
-	grade: number;
-	shots: number;
-	questionImg: string;
-	answerImg: string;
-	answerVideo: string;
-	questionVideo: string;
-	comments: string;
-	type: string;
-	rating: number;
-	more_id: string;
-	created: string;
-	updated: string;
-	__v: number;
+    _id: string;
+    cardsPack_id: string;
+    user_id: string;
+    answer: string;
+    question: string;
+    grade: number;
+    shots: number;
+    questionImg: string;
+    answerImg: string;
+    answerVideo: string;
+    questionVideo: string;
+    comments: string;
+    type: string;
+    rating: number;
+    more_id: string;
+    created: string;
+    updated: string;
+    __v: number;
 }
 export type CreateCardRequestType = {
-	card: CreateCardRequestCardType;
+    card: CreateCardRequestCardType;
 }
 export type CreateCardRequestCardType = {
-	cardsPack_id: string;
-	question: string;
-	answer: string;
-	grade?: string;
-	shots?: string;
-	answerImg?: string;
-	questionImg?: string;
-	questionVideo?: string;
-	answerVideo?: string;
+    cardsPack_id: string;
+    question: string;
+    answer: string;
+    grade?: number;
+    shots?: number;
+    answerImg?: string;
+    questionImg?: string;
+    questionVideo?: string;
+    answerVideo?: string;
 }
 export type CreateCardResponseType = {
-	newCard: CardType;
-	token: string;
-	tokenDeathTime: number;
+    newCard: CardType;
+    token: string;
+    tokenDeathTime: number;
 }
 export type DeleteCardResponseType = {
-	deletedCard: CardType;
-	token: string;
-	tokenDeathTime: number;
+    deletedCard: CardType;
+    token: string;
+    tokenDeathTime: number;
 }
 export type UpdateCardRequestType = {
-	card: Partial<UpdateCardRequestTypeCard>;
+    card: {
+        _id: string;
+        question?: string;
+        answer?: string;
+        grade?: number;
+        shots?: number;
+        answerImg?: string;
+        questionImg?: string;
+        questionVideo?: string;
+        answerVideo?: string;
+    };
 }
-export type UpdateCardRequestTypeCard = {
-	_id: string;
-	question: string;
-	answer: string;
-	grade: string;
-	shots: string;
-	answerImg: string;
-	questionImg: string;
-	questionVideo: string;
-	answerVideo: string;
-}
+
 export type UpdateCardResponseType = {
-	updatedCard: CardType;
-	token: string;
-	tokenDeathTime: number;
+    updatedCard: CardType;
+    token: string;
+    tokenDeathTime: number;
 }
+
+export type RateCardRequestType = {
+    card_id: string;
+    grade: number;
+}
+export type RateCardResponseType = {
+    updatedGrade: CardType;
+    token: string;
+    tokenDeathTime: number;
+}
+
 
 

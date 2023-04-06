@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AsyncConfigType} from "../../app/appSlice";
-import {errorUtils} from "../../common/utils/error-utils";
+import {AsyncConfigType} from "app/appSlice";
+import {errorUtils} from "common/utils/error-utils";
 import {
     cardsAPI,
     CardsQueryParams,
@@ -9,9 +9,11 @@ import {
     CreateCardResponseType,
     DeleteCardResponseType,
     GetCardsResponseType,
+    RateCardRequestType,
+    RateCardResponseType,
     UpdateCardRequestType,
     UpdateCardResponseType
-} from "../../api/cardsAPI";
+} from "api/cardsAPI";
 
 
 export const cardsInitialState = {
@@ -32,8 +34,8 @@ export const cardsInitialState = {
         sortCards: '',
         page: 0,
         pageCount: 4,
-        cardAnswer:'',
-        cardQuestion:''
+        cardAnswer: '',
+        cardQuestion: ''
     },
 }
 
@@ -44,13 +46,13 @@ const cardsSlice = createSlice({
     reducers: {
         setCards: (state, action: PayloadAction<GetCardsResponseType>) => {
             state.cards = action.payload.cards;
-            state.packUserId=action.payload.packUserId
+            state.packUserId = action.payload.packUserId
             state.cardsTotalCount = action.payload.cardsTotalCount
-            state.packName=action.payload.packName
-            state.packPrivate=action.payload.packPrivate
-            state.packCreated=action.payload.packCreated
-            state.packUpdated=action.payload.packUpdated
-            state.packUpdated=action.payload.packUpdated
+            state.packName = action.payload.packName
+            state.packPrivate = action.payload.packPrivate
+            state.packCreated = action.payload.packCreated
+            state.packUpdated = action.payload.packUpdated
+            state.packUpdated = action.payload.packUpdated
             state.token = action.payload.token
             state.tokenDeathTime = action.payload.tokenDeathTime
 
@@ -126,4 +128,20 @@ export const updateCardTC = createAsyncThunk<
             return thunkAPI.rejectWithValue(error)
         }
     })
+export const rateCardTC = createAsyncThunk<
+    RateCardResponseType,
+    RateCardRequestType,
+    AsyncConfigType
+>('/cards/grade/rateCard',
+    async (data, thunkAPI) => {
+        try {
+            const response = await cardsAPI.rateCard(data)
+            thunkAPI.dispatch(getCardsTC())
+            return response
+        } catch (e) {
+            const error = errorUtils(e)
+            return thunkAPI.rejectWithValue(error)
+        }
+    })
+
 

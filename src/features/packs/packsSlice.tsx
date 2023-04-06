@@ -1,17 +1,17 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {AsyncConfigType} from "../../app/appSlice";
-import {errorUtils} from "../../common/utils/error-utils";
+import {AsyncConfigType} from "app/appSlice";
+import {errorUtils} from "common/utils/error-utils";
 import {
     CreatePackRequestType,
     CreatePackResponseType,
     DeletePackResponseType,
     GetPacksResponseType,
     packsAPI,
-    PackType,
     PacksQueryParams,
+    PackType,
     UpdatePackRequestType,
     UpdatePackResponseType
-} from "../../api/packsAPI";
+} from "api/packsAPI";
 
 
 export const packsInitialState = {
@@ -32,7 +32,6 @@ export const packsInitialState = {
         block: false,
     },
 }
-
 
 
 const packsSlice = createSlice({

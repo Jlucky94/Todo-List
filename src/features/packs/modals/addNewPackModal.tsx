@@ -1,4 +1,4 @@
-import React, {Children} from 'react';
+import React from 'react';
 import {BasicModal} from "common/components/modal/basicModal";
 import {Button, Checkbox, FormControlLabel, FormGroup, TextField} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
@@ -39,7 +39,7 @@ export const AddNewPackModal = () => {
         <BasicModal
             title={'Add new pack'}
             label={'Add new pack'}
-        >
+            type={'button'}>
             <form onSubmit={onSubmit}>
                 <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
                     <Controller

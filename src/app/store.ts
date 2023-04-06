@@ -2,11 +2,11 @@ import {AnyAction} from 'redux';
 import {ThunkDispatch} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
-import {authReducer} from "../features/auth/authSlice";
-import {profileReducer} from "../features/profile/profileSlice";
+import {authReducer} from "features/auth/authSlice";
+import {profileReducer} from "features/profile/profileSlice";
 import {appReducer} from "./appSlice";
-import {packsReducer} from "../features/packs/packsSlice";
-import {cardsReducer} from "../features/cards/cardsSlice";
+import {packsReducer} from "features/packs/packsSlice";
+import {cardsReducer} from "features/cards/cardsSlice";
 
 
 export const store = configureStore({
@@ -15,7 +15,7 @@ export const store = configureStore({
         auth: authReducer,
         profile: profileReducer,
         packs: packsReducer,
-        cards:cardsReducer,
+        cards: cardsReducer,
 
     },
 });

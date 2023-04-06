@@ -1,14 +1,14 @@
 import React, {useEffect} from 'react';
-import {Container, Skeleton, Stack, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {getPacksTC, packsActions} from "./packsSlice";
-import SearchAndFilterBlock from "../../common/components/searchAndFilterBlock/SearchAndFilterBlock";
 import PacksTable from "./table/PacksTable";
-import Paginator from "../../common/components/paginator/Paginator";
 import {useDebounce} from "use-debounce";
 import {parseInt} from "lodash";
 import {useSearchParams} from "react-router-dom";
 import {AddNewPackModal} from "features/packs/modals/addNewPackModal";
+import Paginator from "common/components/paginator/Paginator";
+import SearchAndFilterBlock from "common/components/searchAndFilterBlock/SearchAndFilterBlock";
 
 
 const Packs = () => {
@@ -20,7 +20,6 @@ const Packs = () => {
         const packsPageSize = useAppSelector(state => state.packs.params.pageCount)
 
         const [searchParams, setSearchParams] = useSearchParams()
-        console.log(searchParams)
         const handleChangePage = (
             event: React.MouseEvent<HTMLButtonElement> | null,
             newPage: number,
@@ -56,7 +55,7 @@ const Packs = () => {
                     <Typography component={'span'} variant={"h4"}>
                         Pack list
                     </Typography>
-                    <AddNewPackModal />
+                    <AddNewPackModal/>
                 </div>
                 <SearchAndFilterBlock/>
                 <Paginator dispatch={dispatch} totalItemsCount={totalPacksCount} pageSize={packsPageSize}

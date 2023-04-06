@@ -40,7 +40,8 @@ export const EditPackModal: FC<Props> = ({packId, packName}) => {
     return (
         <BasicModal
             title={'Edit Pack'}
-            label={<ModeEditIcon sx={{cursor: 'pointer'}}/>}
+            type={'icon'}
+            label={<ModeEditIcon/>}
             children={
                 <form onSubmit={onSubmit}>
                     <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>

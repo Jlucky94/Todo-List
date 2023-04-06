@@ -1,11 +1,10 @@
 import React, {FC} from 'react';
 import {BasicModal} from "common/components/modal/basicModal";
-import {Button, Checkbox, FormControlLabel, FormGroup, TextField} from "@mui/material";
+import {Button, FormGroup, TextField} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {addNewPackSchema} from "common/utils/yupResolvers/yupResolvers";
+import {addNewCardSchema} from "common/utils/yupResolvers/yupResolvers";
 import {useAppDispatch, useAppSelector} from "app/store";
-import {updatePackTC} from "features/packs/packsSlice";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import {updateCardTC} from "features/cards/cardsSlice";
 
@@ -27,7 +26,7 @@ export const EditCardModal: FC<Props> = ({question, answer, cardId}) => {
         control,
         handleSubmit,
         formState: {errors}
-    } = useForm<EditCardType>({resolver: yupResolver(addNewPackSchema), defaultValues: {answer, question}});
+    } = useForm<EditCardType>({resolver: yupResolver(addNewCardSchema), defaultValues: {answer, question}});
 
     const onSubmit = handleSubmit((data) => {
         dispatch(updateCardTC({
@@ -42,7 +41,8 @@ export const EditCardModal: FC<Props> = ({question, answer, cardId}) => {
     return (
         <BasicModal
             title={'Edit Card'}
-            label={<ModeEditIcon sx={{cursor: 'pointer'}}/>}
+            type={'icon'}
+            label={<ModeEditIcon/>}
             children={
                 <form onSubmit={onSubmit}>
                     <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>

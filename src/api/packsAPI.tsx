@@ -1,10 +1,10 @@
 import axios, {AxiosResponse} from "axios";
-import {currentURL, localURL} from "./authAPI";
+import {currentURL} from "./authAPI";
 
 
 const instance = axios.create({
     withCredentials: true,
-    baseURL: currentURL+'cards/pack/'
+    baseURL: currentURL + 'cards/pack/'
 })
 
 export const packsAPI = {

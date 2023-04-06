@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, MouseEvent, useEffect, useState} from 'react';
 import {Button, ButtonGroup, Container, Input, Typography} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {useNavigate, useParams} from "react-router-dom";
 import CardsTable from "./table/CardsTable";
 import {useDebounce} from "use-debounce";
-import {cardsActions, createCardTC, getCardsTC} from "./cardsSlice";
+import {cardsActions, getCardsTC} from "./cardsSlice";
 import classes from "features/packs/Packs.module.css";
 import {parseInt} from "lodash";
 import Paginator from "common/components/paginator/Paginator";
-import {AddNewCardModal} from "features/packs/modals/addNewCardModal";
+import {AddNewCardModal} from "features/cards/modals/addNewCardModal";
 
 const Cards = () => {
         const params = useParams()
@@ -26,17 +26,16 @@ const Cards = () => {
         const [inputValue, setInputValue] = useState('')
         const debouncedQueryParams = useDebounce(queryParams, 650)
         const debouncedInputValue = useDebounce(inputValue, 500)
-        // const learnToPack = () => navigate to this cards
+        const learnToPackHandler = () => navigate('/learn/' + packId)
+        const backToPackListHandler = () => navigate("/cards/packs")
 
         const handleChangePage = (
-            event: React.MouseEvent<HTMLButtonElement> | null,
+            event: MouseEvent<HTMLButtonElement> | null,
             newPage: number,
         ) => dispatch(cardsActions.setParams({page: newPage}))
         const handleChangeRowsPerPage = (
-            event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-        ) => {
-            dispatch(cardsActions.setParams({pageCount: parseInt(event.target.value), page: 0}));
-        };
+            event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+        ) => dispatch(cardsActions.setParams({pageCount: parseInt(event.target.value), page: 0}));
 
 
         useEffect(() => {
@@ -49,33 +48,44 @@ const Cards = () => {
 
         return (
             <Container style={{display: 'flex', flexDirection: 'column'}}>
+
                 <div style={{display: "flex", justifyContent: "space-between"}}>
                     <Typography component={'span'} fontWeight={"bold"} fontStyle={"oblique"}>
                         {packName}
                     </Typography>
+
                     <ButtonGroup>
-                        <Button onClick={()=>navigate("/cards/packs")}>Back to pack list</Button>
+                        <Button onClick={backToPackListHandler}>Back to pack list</Button>
+
                         {currentPackUserId === userId ?
                             <AddNewCardModal cardPack_id={packId}/>
-                            : <Button variant={'contained'} disabled={totalCardsCount === 0}>
+                            :
+                            <Button onClick={learnToPackHandler} variant={'contained'} disabled={totalCardsCount === 0}>
                                 Learn to pack
                             </Button>}
                     </ButtonGroup>
                 </div>
+
                 <div style={{display: 'flex', flexDirection: 'row', justifyContent: "space-between"}}>
                     <div className={classes.search}>
-                        <Typography style={{textAlign: 'start'}}>Search</Typography>
+                        <Typography style={{textAlign: 'start'}}>
+                            Search
+                        </Typography>
                         <Input type="text" value={inputValue} onChange={(e) => setInputValue(e.currentTarget.value)}/>
                     </div>
+
                     <Paginator dispatch={dispatch} totalItemsCount={totalCardsCount} pageSize={cardsPageSize}
                                page={queryParams.page} handleChangePage={handleChangePage}
                                handleChangeRowsPerPage={handleChangeRowsPerPage}/>
                 </div>
+
                 <CardsTable/>
+
                 {totalCardsCount === 0 &&
                     <Typography>
                         No cards found, try to change filter parameters
                     </Typography>}
+
             </Container>
         );
     }

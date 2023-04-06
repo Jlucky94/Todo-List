@@ -1,7 +1,9 @@
 import React from 'react';
 import {
-    Icon,
-    Paper, Skeleton, Stack,
+    IconButton,
+    Paper,
+    Skeleton,
+    Stack,
     Table,
     TableBody,
     TableCell,
@@ -10,14 +12,12 @@ import {
     TableRow,
     TableSortLabel
 } from "@mui/material";
-import {useAppDispatch, useAppSelector} from "../../../app/store";
-import {PackType, UpdatePackRequestType} from "../../../api/packsAPI";
+import {useAppDispatch, useAppSelector} from "app/store";
+import {PackType} from "api/packsAPI";
 import SchoolIcon from '@mui/icons-material/School';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
-import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
-import {deletePackTC, packsActions, updatePackTC} from "../packsSlice";
+import {packsActions} from "../packsSlice";
 import {useNavigate} from "react-router-dom";
-import classes from '../Packs.module.css'
+import classes from 'features/packs/Packs.module.css'
 import {EditPackModal} from "features/packs/modals/editPackModal";
 import {DeletePackModal} from "features/packs/modals/deletePackModal";
 
@@ -34,17 +34,16 @@ const PacksTable = () => {
     const createData = (pack: PackType) => ({
         packId: pack._id,
         name: pack.name,
-        cards: pack.cardsCount,
+        cardsCount: pack.cardsCount,
         updated: pack.updated,
         creator: pack.user_name,
         userId: pack.user_id
     });
     const rows = packs.map(pack => createData(pack))
-    const deletePackHandler = (id: string) => () => dispatch(deletePackTC({id}))
-    const updatePackHandler = (data: UpdatePackRequestType) => () => dispatch(updatePackTC(data))
     const packOnClickHandler = (packId: string) => () => {
         navigate('/cards/pack/' + packId)
     }
+    const learnIconHandler = (packId: string) => () => navigate('/learn/' + packId)
 
     const arr = [
         {id: 'name', label: 'Name'},
@@ -52,7 +51,7 @@ const PacksTable = () => {
         {id: 'updated', label: 'Last update'},
         {id: 'user_name', label: 'Created by'},
     ]
-    const createHeaderCellWithLabel = (header: HeadCellType) => (
+    const createHeaderCellWithSort = (header: HeadCellType) => (
         <TableCell key={header.id} style={{fontWeight: 750}}>
             {header.label}
             <TableSortLabel
@@ -67,7 +66,7 @@ const PacksTable = () => {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead className={classes.headerRow}>
                         <TableRow>
-                            {arr.map(header => createHeaderCellWithLabel(header))}
+                            {arr.map(header => createHeaderCellWithSort(header))}
                             <TableCell align="left" style={{fontWeight: 750}}>
                                 Actions
                             </TableCell>
@@ -82,14 +81,16 @@ const PacksTable = () => {
                                                onClick={packOnClickHandler(row.packId)}>
                                         {row.name}
                                     </TableCell>
-                                    <TableCell align="left">{row.cards}</TableCell>
+                                    <TableCell align="left">{row.cardsCount}</TableCell>
                                     <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
                                     <TableCell align="left">{row.creator}</TableCell>
                                     <TableCell align="left">
-                                        <Icon sx={{cursor: 'pointer'}}>
+                                        <IconButton onClick={learnIconHandler(row.packId)}
+                                                    disabled={row.cardsCount === 0}>
                                             <SchoolIcon/>
-                                        </Icon>
-                                        {userId === row.userId && <EditPackModal packId={row.packId} packName={row.name}/>}
+                                        </IconButton>
+                                        {userId === row.userId &&
+                                            <EditPackModal packId={row.packId} packName={row.name}/>}
                                         {userId === row.userId &&
                                             <DeletePackModal packId={row.packId} packName={row.name}/>}
                                     </TableCell>

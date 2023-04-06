@@ -18,9 +18,11 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
 .headerRow {
     background-color: rgb(239, 239, 239);
 }
+
 .search {
 
 }

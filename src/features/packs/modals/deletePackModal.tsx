@@ -22,7 +22,8 @@ export const DeletePackModal: FC<Props> = ({packId, packName}) => {
     return (
         <BasicModal
             title={'Delete Pack'}
-            label={<DeleteSweepIcon sx={{cursor: 'pointer'}}/>}
+            type={'icon'}
+            label={<DeleteSweepIcon/>}
             children={
                 <>
                     <div>

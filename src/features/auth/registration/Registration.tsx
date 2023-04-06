@@ -78,7 +78,7 @@ const Registration = () => {
                                             errorMessage={errors.passwordConfirmation?.message}
                                         />)
                                     }/>
-                                <Button type="submit" variant={'contained'} disabled={isLoading==='loading'}>
+                                <Button type="submit" variant={'contained'} disabled={isLoading === 'loading'}>
                                     Sign Up
                                 </Button>
                                 <div>

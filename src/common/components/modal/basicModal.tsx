@@ -1,5 +1,5 @@
-import React, {Children, cloneElement, FC, ReactElement, ReactNode, useState} from 'react';
-import {Box, Button, Modal, Typography} from "@mui/material";
+import React, {FC, ReactNode, useState} from 'react';
+import {Box, Button, IconButton, Modal, Typography} from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
 const style = {
@@ -19,17 +19,19 @@ const style = {
 };
 type Props = {
     label: ReactNode
-    children:ReactNode
+    children: ReactNode
     title: string
+    type: 'button' | 'icon'
 }
-export const BasicModal: FC<Props> = ({label, children, title}) => {
+export const BasicModal: FC<Props> = ({label, children, title, type}) => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
-        <div>
-            <Button variant={"contained"} onClick={handleOpen}>{label}</Button>
+        <>
+            {type === 'button' ? <Button variant={"contained"} onClick={handleOpen}>{label}</Button>
+                : <IconButton onClick={handleOpen}>{label}</IconButton>}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -46,6 +48,6 @@ export const BasicModal: FC<Props> = ({label, children, title}) => {
                     {children}
                 </Box>
             </Modal>
-        </div>
+        </>
     );
 };

@@ -40,7 +40,6 @@ const Login = () => {
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
                         <form onSubmit={onSubmit}>
                             <h2>Sign In</h2>
-                            {/*<FormControl sx={{width: '100%'}}>*/}
                             <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
                                 <Controller
                                     control={control}
@@ -80,7 +79,7 @@ const Login = () => {
                                     Don't have an account?
                                 </div>
                                 <Button type="button" variant={'contained'} onClick={onClickHandler}
-                                        >
+                                >
                                     Sign Up
                                 </Button>
                                 <div>
@@ -89,7 +88,6 @@ const Login = () => {
                                     </LinkWrapper>
                                 </div>
                             </FormGroup>
-                            {/*</FormControl>*/}
                         </form>
                     </Paper>
                 </Container>
