@@ -8,6 +8,8 @@ import {updateProfileDataTC} from "./profileSlice";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
 import classes from "features/auth/login/Login.module.css";
 import {Link} from "react-router-dom";
+import FileInput from "common/fileInput/FileInput";
+import Avatar from "features/profile/avatar/Avatar";
 
 type ChangeProfileData = {
     name: string
@@ -15,9 +17,12 @@ type ChangeProfileData = {
 
 const Profile = () => {
         const dispatch = useAppDispatch()
+
         const isLoading = useAppSelector(state => state.app.status)
-        const [editMode, setEditMode] = useState<boolean>(false)
         const userData = useAppSelector(state => state.profile.data)
+
+        const [editMode, setEditMode] = useState<boolean>(false)
+
         const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
 
         const onSubmit = handleSubmit(data => {
@@ -36,7 +41,7 @@ const Profile = () => {
                     <Paper className={classes.paperContainer} sx={{padding: '40px 33px'}}>
                         <form onSubmit={onSubmit}>
                             <h2>Personal Information</h2>
-                            <img className={styles.mainPhoto} src={defaultUserAvatar} alt=""/>
+                            <Avatar/>
                             <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
                                 {editMode ? <>
                                         <Controller
@@ -60,7 +65,8 @@ const Profile = () => {
                                             Save
                                         </Button>
                                     </>
-                                    : <div>
+                                    :
+                                    <div>
                                         <h3>{userData.name}</h3>
                                     </div>}
                                 <div>

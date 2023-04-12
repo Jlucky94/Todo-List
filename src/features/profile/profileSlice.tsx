@@ -37,35 +37,29 @@ export const profileSlice = createSlice({
             state.data.avatar = action.payload.avatar
         }
     },
-
 })
 
 export const {reducer: profileReducer, actions: profileActions} = profileSlice
 
-//thunks
-//
-// export const getUserDataTC = createAsyncThunk('profile/setUserData',
-//     async (data: { email: string, password: string, rememberMe: boolean }, thunkAPI) => {
-//         try {
-//             const response = await authAPI.login(data)
-//             thunkAPI.dispatch(userDataGot(response))
-//         } catch (e: any) {
-//             return thunkAPI.rejectWithValue(e.response.data.error)
-//         }
-//     })
 export const updateProfileDataTC = createAsyncThunk<
     UpdateProfileResponseType,
-    UpdateProfileRequestType,
+    Partial<UpdateProfileRequestType>,
     AsyncConfigType
 >('/profile/updateProfileData',
-    async (data: UpdateProfileRequestType, thunkAPI) => {
+    async (data: Partial<UpdateProfileRequestType>, thunkAPI) => {
+        const ava = thunkAPI.getState().profile.data.avatar
+        const name = thunkAPI.getState().profile.data.name
         try {
-            const response = await authAPI.updateProfile(data)
-            thunkAPI.dispatch(profileActions.profileUpdated(data))
+            const response = await authAPI.updateProfile({name: data.name || name, avatar: data.avatar || ava})
+            console.log(response)
+            thunkAPI.dispatch(profileActions.profileUpdated({
+                name: response.updatedUser.name,
+                avatar: response.updatedUser.avatar
+            }))
             return response
-        } catch (e) {
+        } catch (e: any) {
             const error = errorUtils(e)
-            return thunkAPI.rejectWithValue(error)
+            return thunkAPI.rejectWithValue(e.response.statusText)
         }
     })
 

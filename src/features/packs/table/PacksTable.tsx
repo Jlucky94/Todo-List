@@ -24,6 +24,7 @@ import {DeletePackModal} from "features/packs/modals/deletePackModal";
 export type HeadCellType = {
     id: string
     label: string
+    sort: boolean
 }
 const PacksTable = () => {
     const navigate = useNavigate()
@@ -37,7 +38,8 @@ const PacksTable = () => {
         cardsCount: pack.cardsCount,
         updated: pack.updated,
         creator: pack.user_name,
-        userId: pack.user_id
+        userId: pack.user_id,
+        cover: pack.deckCover
     });
     const rows = packs.map(pack => createData(pack))
     const packOnClickHandler = (packId: string) => () => {
@@ -46,19 +48,24 @@ const PacksTable = () => {
     const learnIconHandler = (packId: string) => () => navigate('/learn/' + packId)
 
     const arr = [
-        {id: 'name', label: 'Name'},
-        {id: 'cardsCount', label: 'Cards'},
-        {id: 'updated', label: 'Last update'},
-        {id: 'user_name', label: 'Created by'},
+        {id: 'cover', label: 'Cover', sort: false},
+        {id: 'name', label: 'Name', sort: true},
+        {id: 'cardsCount', label: 'Cards', sort: true},
+        {id: 'updated', label: 'Last update', sort: true},
+        {id: 'user_name', label: 'Created by', sort: true},
+        {id: 'actions', label: 'Actions', sort: false}
     ]
     const createHeaderCellWithSort = (header: HeadCellType) => (
-        <TableCell key={header.id} style={{fontWeight: 750}}>
-            {header.label}
-            <TableSortLabel
-                direction={sortPacks === '0' + header.id ? "asc" : "desc"}
-                active={sortPacks.includes(header.id)}
-                onClick={() => dispatch(packsActions.setParams({sortPacks: sortPacks === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
-        </TableCell>)
+            <TableCell key={header.id} style={{fontWeight: 750}}>
+                {header.label}
+                {header.sort&&
+                    <TableSortLabel
+                        direction={sortPacks === '0' + header.id ? "asc" : "desc"}
+                        active={sortPacks.includes(header.id)}
+                        onClick={() => dispatch(packsActions.setParams({sortPacks: sortPacks === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
+                }
+            </TableCell>
+        )
 
     return (
         <div>
@@ -67,9 +74,6 @@ const PacksTable = () => {
                     <TableHead className={classes.headerRow}>
                         <TableRow>
                             {arr.map(header => createHeaderCellWithSort(header))}
-                            <TableCell align="left" style={{fontWeight: 750}}>
-                                Actions
-                            </TableCell>
                         </TableRow>
                     </TableHead>
                     {packs.length ? <TableBody>
@@ -77,6 +81,7 @@ const PacksTable = () => {
                                 <TableRow hover
                                           key={row.packId}
                                 >
+                                    <TableCell align="left">{row.cover}</TableCell>
                                     <TableCell component="th" scope="row" sx={{cursor: 'pointer'}}
                                                onClick={packOnClickHandler(row.packId)}>
                                         {row.name}

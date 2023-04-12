@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const localURL = 'http://localhost:7542/2.0/'
-export const currentURL = localURL || process.env.REACT_APP_BACK_URL
+export const currentURL = process.env.REACT_APP_BACK_URL || localURL
 
 const instance = axios.create({
     withCredentials: true,
@@ -72,13 +72,19 @@ export type UpdateProfileRequestType = {
     name: string
     avatar: string
 }
-export type UpdateProfileResponseType = UserDataResponseType & { token: string, tokenDeathTime: number }
-export type ForgotResponseType = {
-    info: string;
-    success: boolean;
-    answer: boolean;
-    html: boolean;
+export type UpdateProfileResponseType = {
+    updatedUser: UserDataResponseType
+    token: string
+    tokenDeathTime: number
 }
+
+export type ForgotResponseType =
+    {
+        info: string;
+        success: boolean;
+        answer: boolean;
+        html: boolean;
+    }
 export type InfoResponseType = {
     info: string
 }

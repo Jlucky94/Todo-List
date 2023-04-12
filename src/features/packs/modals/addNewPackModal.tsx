@@ -71,8 +71,6 @@ export const AddNewPackModal = () => {
                     </Button>
                 </FormGroup>
             </form>
-            )
-
         </BasicModal>
     );
 };

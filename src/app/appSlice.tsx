@@ -23,7 +23,13 @@ const appSlice = createSlice({
         clearInfoMessages: (state) => {
             state.infoMessage = null
             state.error = null
-        }
+        },
+        setInfoMessage: (state,action:PayloadAction<{info:string}>) => {
+            state.infoMessage=action.payload.info
+        },
+        setError: (state,action:PayloadAction<{error:string}>) => {
+            state.error=action.payload.error
+        },
     },
     extraReducers: builder => {
         builder

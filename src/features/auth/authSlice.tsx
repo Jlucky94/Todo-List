@@ -19,7 +19,6 @@ export const initialState = {
     error: null as null | string
 }
 export type InitialStateType = typeof initialState
-// const navigate = useNavigate()
 export const authSlice = createSlice({
     name: 'auth',
     initialState,

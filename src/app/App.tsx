@@ -16,13 +16,14 @@ import Forgot from "features/auth/forgot/Forgot";
 import SetNewPassword from "features/auth/forgot/SetNewPassword";
 import PrivateRoutes from "routes/PrivateRoutes";
 import LearnCards from "features/learnCards/LearnCards";
+import Page404 from "common/utils/Page404/Page404";
 
 function App() {
     const isInit = useAppSelector(state => state.app.isInit)
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getAuthUserDataTC())
-    }, [])
+    },   [])
     if (!isInit) {
         return <Preloader/>
     }
@@ -43,6 +44,7 @@ function App() {
                     <Route path={"/forgot"} element={<Forgot/>}/>
                     <Route path={"/set-newpassword/:token"} element={<SetNewPassword/>}/>
                     <Route path={"/"} element={<Login/>}/>
+                    <Route path={"/:error404"} element={<Page404/>}/>
                 </Routes>
             </Container>
             <ErrorSnackbar/>

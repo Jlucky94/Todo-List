@@ -24,7 +24,6 @@ const Packs = () => {
             event: React.MouseEvent<HTMLButtonElement> | null,
             newPage: number,
         ) => {
-            console.log(newPage)
             dispatch(packsActions.setParams({page: newPage}))
         }
         const handleChangeRowsPerPage = (
@@ -46,7 +45,13 @@ const Packs = () => {
 
         useEffect(() => {
             dispatch(getPacksTC())
-        }, [debouncedQueryParams[0]])
+        }, [
+            debouncedQueryParams[0].min,
+            debouncedQueryParams[0].max,
+            debouncedQueryParams[0].user_id,
+            debouncedQueryParams[0].sortPacks,
+            debouncedQueryParams[0].page
+        ])
 
 
         return (

@@ -6,6 +6,7 @@ import {DeleteCardModal} from "features/cards/modals/deleteCardModal";
 import {EditCardModal} from "features/cards/modals/editCardModal";
 import {packsActions} from "features/packs/packsSlice";
 import {HeadCellType} from "features/packs/table/PacksTable";
+import StarsGrade from "common/components/stars-grade/StarsGrade";
 
 const CardsTable = () => {
     const dispatch = useAppDispatch()
@@ -65,7 +66,7 @@ const CardsTable = () => {
                                 <TableCell align="left">{row.answer}</TableCell>
                                 <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
                                 <TableCell align="left">
-                                    {row.grade}
+                                    <StarsGrade grade={row.grade}/>
                                 </TableCell>
                                 {userId === row.userId && <TableCell align="left">
                                     <EditCardModal cardId={row.key} question={row.question} answer={row.answer}/>

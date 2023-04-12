@@ -43,7 +43,15 @@ const Cards = () => {
         }, [debouncedInputValue[0]])
         useEffect(() => {
             dispatch(getCardsTC())
-        }, [debouncedQueryParams[0]])
+        }, [
+            debouncedQueryParams[0].min,
+            debouncedQueryParams[0].max,
+            debouncedQueryParams[0].sortCards,
+            debouncedQueryParams[0].pageCount,
+            debouncedQueryParams[0].page,
+            debouncedQueryParams[0].cardQuestion,
+
+        ])
 
 
         return (
