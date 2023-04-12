@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "app/store";
-import defaultUserAvatar from "assets/images/defaultUserAvatar.png"
 import styles from "./Profile.module.css"
 import {logoutTC} from "features/auth/authSlice";
 import {Controller, useForm} from "react-hook-form";
@@ -8,7 +7,6 @@ import {updateProfileDataTC} from "./profileSlice";
 import {Button, Container, FormGroup, Paper, TextField} from "@mui/material";
 import classes from "features/auth/login/Login.module.css";
 import {Link} from "react-router-dom";
-import FileInput from "common/fileInput/FileInput";
 import Avatar from "features/profile/avatar/Avatar";
 
 type ChangeProfileData = {
@@ -26,7 +24,7 @@ const Profile = () => {
         const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
 
         const onSubmit = handleSubmit(data => {
-            const promise = dispatch(updateProfileDataTC({name: data.name, avatar: ''}))
+            const promise = dispatch(updateProfileDataTC({name: data.name}))
             promise.then((response) => {
                 response.meta.requestStatus === "fulfilled" && setEditMode(false)
             })

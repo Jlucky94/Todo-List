@@ -1,6 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {AppRootStateType, ThunkAppDispatchType} from "./store";
 import {fulfilled, infoFulfilled, pending, rejected} from "features/auth/authSlice";
+import {string} from "yup";
 
 export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
@@ -8,7 +9,7 @@ export const appInitialState = {
     isInit: false,
     error: null as string | null,
     status: 'idle' as AppStatusType,
-    infoMessage: null as string | null
+    infoMessage: null as string | null,
 
 }
 export type InitialStateType = typeof appInitialState
@@ -24,12 +25,12 @@ const appSlice = createSlice({
             state.infoMessage = null
             state.error = null
         },
-        setInfoMessage: (state,action:PayloadAction<{info:string}>) => {
-            state.infoMessage=action.payload.info
+        setInfoMessage: (state, action: PayloadAction<{ info: string }>) => {
+            state.infoMessage = action.payload.info
         },
-        setError: (state,action:PayloadAction<{error:string}>) => {
-            state.error=action.payload.error
-        },
+        setError: (state, action: PayloadAction<{ error: string }>) => {
+            state.error = action.payload.error
+        }
     },
     extraReducers: builder => {
         builder

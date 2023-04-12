@@ -7,6 +7,7 @@ import {EditCardModal} from "features/cards/modals/editCardModal";
 import {packsActions} from "features/packs/packsSlice";
 import {HeadCellType} from "features/packs/table/PacksTable";
 import StarsGrade from "common/components/stars-grade/StarsGrade";
+import {cardsActions} from "features/cards/cardsSlice";
 
 const CardsTable = () => {
     const dispatch = useAppDispatch()
@@ -25,20 +26,24 @@ const CardsTable = () => {
     const rows = cards.map(card => createData(card))
 
     const arr = [
-        {id: 'question', label: 'Question'},
-        {id: 'answer', label: 'Answer'},
-        {id: 'updated', label: 'Last update'},
-        {id: 'grade', label: 'Grade'},
+        {id: 'question', label: 'Question', sort: true},
+        {id: 'answer', label: 'Answer', sort: true},
+        {id: 'updated', label: 'Last update', sort: true},
+        {id: 'grade', label: 'Grade', sort: true},
+        {id: 'actions', label: 'Actions', sort: false}
     ]
 
-    const createHeaderCellWithSort = (header: HeadCellType) => (
-        <TableCell key={header.id} style={{fontWeight: 750}}>
-            {header.label}
-            <TableSortLabel
-                direction={sortCards === '0' + header.id ? "asc" : "desc"}
-                active={sortCards.includes(header.id)}
-                onClick={() => dispatch(packsActions.setParams({sortPacks: sortCards === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
-        </TableCell>)
+    const createCardHeaderCellWithSort = (header: HeadCellType) => {
+        if((header.id==='actions')&&(userId!==currentPackUserId)) return
+        else return (
+            <TableCell key={header.id} style={{fontWeight: 750}}>
+                {header.label}
+                <TableSortLabel
+                    direction={sortCards === '0' + header.id ? "asc" : "desc"}
+                    active={sortCards.includes(header.id)}
+                    onClick={() => dispatch(cardsActions.setParams({sortCards: sortCards === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
+            </TableCell>)
+    }
 
 
     return (
@@ -47,12 +52,7 @@ const CardsTable = () => {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead>
                         <TableRow>
-                            {arr.map(header => createHeaderCellWithSort(header))}
-
-                            {userId === currentPackUserId &&
-                                <TableCell align="left" style={{fontWeight: 750}}>
-                                    Actions
-                                </TableCell>}
+                            {arr.map(header => createCardHeaderCellWithSort(header))}
                         </TableRow>
                     </TableHead>
                     <TableBody>

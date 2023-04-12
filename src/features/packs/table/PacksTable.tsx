@@ -20,6 +20,7 @@ import {useNavigate} from "react-router-dom";
 import classes from 'features/packs/Packs.module.css'
 import {EditPackModal} from "features/packs/modals/editPackModal";
 import {DeletePackModal} from "features/packs/modals/deletePackModal";
+import noImageCover from "assets/images/no-image.jpg"
 
 export type HeadCellType = {
     id: string
@@ -55,17 +56,17 @@ const PacksTable = () => {
         {id: 'user_name', label: 'Created by', sort: true},
         {id: 'actions', label: 'Actions', sort: false}
     ]
-    const createHeaderCellWithSort = (header: HeadCellType) => (
-            <TableCell key={header.id} style={{fontWeight: 750}}>
-                {header.label}
-                {header.sort&&
-                    <TableSortLabel
-                        direction={sortPacks === '0' + header.id ? "asc" : "desc"}
-                        active={sortPacks.includes(header.id)}
-                        onClick={() => dispatch(packsActions.setParams({sortPacks: sortPacks === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
-                }
-            </TableCell>
-        )
+    const createPackHeaderCellWithSort = (header: HeadCellType) => (
+        <TableCell key={header.id} style={{fontWeight: 750}}>
+            {header.label}
+            {header.sort &&
+                <TableSortLabel
+                    direction={sortPacks === '0' + header.id ? "asc" : "desc"}
+                    active={sortPacks.includes(header.id)}
+                    onClick={() => dispatch(packsActions.setParams({sortPacks: sortPacks === '0' + header.id ? '1' + header.id : '0' + header.id}))}/>
+            }
+        </TableCell>
+    )
 
     return (
         <div>
@@ -73,16 +74,20 @@ const PacksTable = () => {
                 <Table sx={{minWidth: 650}} aria-label="simple table">
                     <TableHead className={classes.headerRow}>
                         <TableRow>
-                            {arr.map(header => createHeaderCellWithSort(header))}
+                            {arr.map(header => createPackHeaderCellWithSort(header))}
                         </TableRow>
                     </TableHead>
-                    {packs.length ? <TableBody>
+                    {packs.length ?
+                        <TableBody>
                             {rows.map((row) => (
-                                <TableRow hover
-                                          key={row.packId}
-                                >
-                                    <TableCell align="left">{row.cover}</TableCell>
-                                    <TableCell component="th" scope="row" sx={{cursor: 'pointer'}}
+                                <TableRow hover key={row.packId}>
+                                    <TableCell component="th" scope="row" align="left" sx={{cursor: 'pointer'}}
+                                               onClick={packOnClickHandler(row.packId)}>
+                                        <img style={{height: 75, width: 75}}
+                                             src={row.cover || noImageCover}
+                                             alt="cover"/>
+                                    </TableCell>
+                                    <TableCell sx={{cursor: 'pointer'}}
                                                onClick={packOnClickHandler(row.packId)}>
                                         {row.name}
                                     </TableCell>

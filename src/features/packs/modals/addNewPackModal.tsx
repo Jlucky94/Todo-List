@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BasicModal} from "common/components/modal/basicModal";
 import {Button, Checkbox, FormControlLabel, FormGroup, TextField} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
@@ -6,6 +6,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {addNewPackSchema} from "common/utils/yupResolvers/yupResolvers";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {createPackTC} from "features/packs/packsSlice";
+import FileInput from "common/fileInput/FileInput";
 
 type AddNewPackType = {
     packName: string
@@ -13,8 +14,12 @@ type AddNewPackType = {
 }
 
 export const AddNewPackModal = () => {
+
     const dispatch = useAppDispatch()
+
     const isLoading = useAppSelector(state => state.app.status)
+
+    const [packCover, setPackCover] = useState('')
 
     const {
         control,
@@ -27,10 +32,11 @@ export const AddNewPackModal = () => {
         dispatch(createPackTC({
             cardsPack: {
                 name: data.packName,
-                deckCover: '',
+                deckCover: packCover,
                 private: data.private
             }
         }))
+        console.log(data)
         reset()
     });
 
@@ -55,6 +61,7 @@ export const AddNewPackModal = () => {
                                 onChange={(e) => field.onChange(e)}
                             />)
                         }/>
+                    <FileInput setImg={setPackCover} img={packCover}/>
                     <Controller
                         control={control}
                         name={'private'}

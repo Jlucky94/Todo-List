@@ -5,12 +5,14 @@ import {ConvertFileToBase64} from "common/convertFileToBase64/ConvertFileToBase6
 import {useAppDispatch} from "app/store";
 import {appActions} from "app/appSlice";
 import {profileActions, updateProfileDataTC} from "features/profile/profileSlice";
+import defaultUserAvatar from "assets/images/defaultUserAvatar.png"
 
-
-
-const FileInput = () => {
+type Props = {
+    img:string
+    setImg: (img: string) => void
+}
+const FileInput = ({setImg,img}: Props) => {
     const dispatch = useAppDispatch()
-
 
 
     const uploadHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -19,7 +21,7 @@ const FileInput = () => {
 
             if (file.size < 4000000) {
                 ConvertFileToBase64(file, (file64: string) => {
-                    dispatch(updateProfileDataTC({avatar: file64}))
+                    setImg(file64)
                 })
             } else {
                 dispatch(appActions.setError({error: 'Файл слишком большого размера'}))
@@ -29,14 +31,17 @@ const FileInput = () => {
 
 
     return (
-        <IconButton component="label">
-            <CloudUploadIcon/>
-            <input type="file"
-                   onChange={uploadHandler}
-                   style={{display: 'none'}}
-                   accept="image/*"
-            />
-        </IconButton>
+        <>
+            {img && <img src={img} alt="image" style={{width: 50}}/>}
+            <IconButton component="label">
+                <CloudUploadIcon/>
+                <input type="file"
+                       onChange={uploadHandler}
+                       style={{display: 'none'}}
+                       accept="image/*"
+                />
+            </IconButton>
+        </>
     )
 };
 

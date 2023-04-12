@@ -4,6 +4,7 @@ import defaultUserAvatar from "assets/images/defaultUserAvatar.png";
 import FileInput from "common/fileInput/FileInput";
 import {appActions} from "app/appSlice";
 import {useAppDispatch, useAppSelector} from "app/store";
+import ChangeAvaModal from "features/profile/avatar/ChangeAvaModal";
 
 const Avatar = () => {
     const [avaIsBroken, setAvaIsBroken] = useState(false)
@@ -25,7 +26,7 @@ const Avatar = () => {
                 src={avaIsBroken ? defaultUserAvatar : userAvatar}
                 onError={errorHandler}
                 alt="ava"/>
-            <FileInput/>
+            <ChangeAvaModal/>
         </div>
     );
 };
