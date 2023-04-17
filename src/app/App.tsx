@@ -15,7 +15,7 @@ import Registration from "features/auth/registration/Registration";
 import Forgot from "features/auth/forgot/Forgot";
 import SetNewPassword from "features/auth/forgot/SetNewPassword";
 import PrivateRoutes from "routes/PrivateRoutes";
-import LearnCards from "features/learnCards/LearnCards";
+import LearnCards from "features/cards/learnCards/LearnCards";
 import Page404 from "common/utils/Page404/Page404";
 
 function App() {

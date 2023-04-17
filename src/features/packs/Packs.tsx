@@ -14,12 +14,16 @@ import SearchAndFilterBlock from "common/components/searchAndFilterBlock/SearchA
 const Packs = () => {
 
         const dispatch = useAppDispatch()
+
+
         const queryParams = useAppSelector(state => state.packs.params)
-        const debouncedQueryParams = useDebounce(queryParams, 650)
         const totalPacksCount = useAppSelector(state => state.packs.cardPacksTotalCount)
         const packsPageSize = useAppSelector(state => state.packs.params.pageCount)
 
+        const debouncedQueryParams = useDebounce(queryParams, 650)
+
         const [searchParams, setSearchParams] = useSearchParams()
+
         const handleChangePage = (
             event: React.MouseEvent<HTMLButtonElement> | null,
             newPage: number,
@@ -29,8 +33,19 @@ const Packs = () => {
         const handleChangeRowsPerPage = (
             event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         ) => {
-            dispatch(packsActions.setParams({pageCount: parseInt(event.target.value), page: 0}));
-        };
+            dispatch(packsActions.setParams({pageCount: parseInt(event.target.value), page: 0}))
+        }
+
+        const params: { [key: string]: string } = {}
+        searchParams.forEach((value, key) => {
+            params[key] = value
+        })
+
+
+        useEffect(() => {
+            dispatch(packsActions.setParams(params))
+        },[])
+
         useEffect(() => {
             setSearchParams({
                 packName: queryParams.packName,
@@ -44,6 +59,7 @@ const Packs = () => {
         }, [queryParams])
 
         useEffect(() => {
+            console.log(debouncedQueryParams[0])
             dispatch(getPacksTC())
         }, [
             debouncedQueryParams[0].min,

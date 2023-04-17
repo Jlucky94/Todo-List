@@ -1,15 +1,17 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import {BasicModal} from "common/components/modal/basicModal";
-import {Button, FormGroup, TextField} from "@mui/material";
+import {Button, FormControl, FormGroup, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {Controller, useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {addNewCardSchema} from "common/utils/yupResolvers/yupResolvers";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {createCardTC} from "features/cards/cardsSlice";
+import FileInput from "common/fileInput/FileInput";
 
 type AddNewCardType = {
     question: string
     answer: string
+    questionImg:string
 }
 type Props = {
     cardPack_id: string
@@ -18,6 +20,10 @@ type Props = {
 export const AddNewCardModal: FC<Props> = ({cardPack_id}) => {
     const dispatch = useAppDispatch()
     const isLoading = useAppSelector(state => state.app.status)
+
+    const [questionType, setQuestionType] = useState<'text' | 'img'>('text')
+    const [questionImg, setQuestionImg] = useState('')
+
 
     const {
         control,
@@ -32,8 +38,10 @@ export const AddNewCardModal: FC<Props> = ({cardPack_id}) => {
                 cardsPack_id: cardPack_id,
                 question: data.question,
                 answer: data.answer,
+                questionImg:data.questionImg
             }
         }))
+        console.log(data)
         reset()
     });
 
@@ -46,19 +54,43 @@ export const AddNewCardModal: FC<Props> = ({cardPack_id}) => {
             children={
                 <form onSubmit={onSubmit}>
                     <FormGroup sx={{display: 'flex', rowGap: '24px', marginBottom: '20px'}}>
-                        <Controller
-                            control={control}
-                            name={'question'}
-                            render={({field}) => (
-                                <TextField
-                                    error={!!errors.question}
-                                    helperText={errors.question?.message}
-                                    variant={'standard'}
-                                    label={'Question'}
-                                    value={field.value}
-                                    onChange={(e) => field.onChange(e)}
-                                />)
-                            }/>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Question Type</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={questionType}
+                                label="Question type"
+                                onChange={(e) => setQuestionType(e.target.value as 'text' | 'img')}
+                            >
+                                <MenuItem value='text'>Text</MenuItem>
+                                <MenuItem value='img'>Image</MenuItem>
+                            </Select>
+                        </FormControl>
+                        {questionType === 'text' ?
+                            <Controller
+                                control={control}
+                                name={'question'}
+                                render={({field}) => (
+                                    <TextField
+                                        error={!!errors.question}
+                                        helperText={errors.question?.message}
+                                        variant={'standard'}
+                                        label={'Question'}
+                                        value={field.value}
+                                        onChange={(e) => field.onChange(e)}
+                                    />)
+                                }/>
+                            : <Controller
+                                control={control}
+                                name={'questionImg'}
+                                render={({field}) => (
+                                    <FileInput
+                                        img={questionImg}
+                                        setImg={setQuestionImg}
+                                        onChange={field.onChange}
+                                    />)}/>
+                        }
                         <Controller
                             control={control}
                             name={'answer'}

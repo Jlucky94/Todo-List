@@ -11,11 +11,13 @@ import {updateCardTC} from "features/cards/cardsSlice";
 type EditCardType = {
     question: string
     answer: string
+    type: 'image' | 'text'
 }
 type Props = {
     cardId: string
     question: string
     answer: string
+
 }
 
 export const EditCardModal: FC<Props> = ({question, answer, cardId}) => {

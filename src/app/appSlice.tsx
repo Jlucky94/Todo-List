@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, isFulfilled, isPending, isRejected, PayloadAction} from "@reduxjs/toolkit";
 import {AppRootStateType, ThunkAppDispatchType} from "./store";
 import {fulfilled, infoFulfilled, pending, rejected} from "features/auth/authSlice";
 import {string} from "yup";
@@ -34,18 +34,18 @@ const appSlice = createSlice({
     },
     extraReducers: builder => {
         builder
-            .addMatcher(pending, state => {
+            .addMatcher(isPending, state => {
                 state.status = 'loading'
                 state.infoMessage = null
                 state.error = null
             })
-            .addMatcher(fulfilled, (state) => {
+            .addMatcher(isFulfilled, (state) => {
                 state.status = 'succeeded'
             })
             .addMatcher(infoFulfilled, (state, action) => {
                 state.infoMessage = action.payload.info.toLowerCase()
             })
-            .addMatcher(rejected, (state, action) => {
+            .addMatcher(isRejected, (state, action) => {
                 state.error = action.payload as string
                 state.status = 'failed'
             })

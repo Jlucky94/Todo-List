@@ -21,7 +21,9 @@ const CardsTable = () => {
         answer: card.answer,
         updated: card.updated,
         grade: card.grade,
-        userId: card.user_id
+        userId: card.user_id,
+        questionImg: card.questionImg,
+        answerImg: card.answerImg
     });
     const rows = cards.map(card => createData(card))
 
@@ -34,7 +36,7 @@ const CardsTable = () => {
     ]
 
     const createCardHeaderCellWithSort = (header: HeadCellType) => {
-        if((header.id==='actions')&&(userId!==currentPackUserId)) return
+        if ((header.id === 'actions') && (userId !== currentPackUserId)) return
         else return (
             <TableCell key={header.id} style={{fontWeight: 750}}>
                 {header.label}
@@ -61,9 +63,19 @@ const CardsTable = () => {
                                 key={row.key}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.question}
+                                    {row.questionImg ?
+                                        <img
+                                            style={{height: 75, width: 75}}
+                                            src={row.questionImg}
+                                            alt="Question Image"/>
+                                        : row.question}
                                 </TableCell>
-                                <TableCell align="left">{row.answer}</TableCell>
+                                <TableCell align="left">{row.answerImg ?
+                                    <img
+                                        style={{height: 75, width: 75}}
+                                        src={row.answerImg}
+                                        alt="Question Image"/>
+                                    : row.question}</TableCell>
                                 <TableCell align="left">{row.updated.slice(0, 10)}</TableCell>
                                 <TableCell align="left">
                                     <StarsGrade grade={row.grade}/>

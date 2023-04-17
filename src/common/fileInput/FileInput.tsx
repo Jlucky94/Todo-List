@@ -8,10 +8,11 @@ import {profileActions, updateProfileDataTC} from "features/profile/profileSlice
 import defaultUserAvatar from "assets/images/defaultUserAvatar.png"
 
 type Props = {
-    img:string
+    img: string
     setImg: (img: string) => void
+    onChange?: (img:string) => void
 }
-const FileInput = ({setImg,img}: Props) => {
+const FileInput = ({setImg, img,onChange}: Props) => {
     const dispatch = useAppDispatch()
 
 
@@ -22,6 +23,7 @@ const FileInput = ({setImg,img}: Props) => {
             if (file.size < 4000000) {
                 ConvertFileToBase64(file, (file64: string) => {
                     setImg(file64)
+                    onChange&&onChange(file64)
                 })
             } else {
                 dispatch(appActions.setError({error: 'Файл слишком большого размера'}))

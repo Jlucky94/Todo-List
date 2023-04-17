@@ -43,6 +43,9 @@ export const authSlice = createSlice({
                 state.isLoading = false
                 state.error = action.payload as string
             })
+            .addCase(getAuthUserDataTC.fulfilled,state => {
+                state.isAuth = true
+            })
 
     }
 })
@@ -54,9 +57,7 @@ export const getAuthUserDataTC = createAsyncThunk<UserDataResponseType, void, As
 ('auth/getAuthUserData',
     async (_, thunkAPI) => {
         try {
-
             const response = await authAPI.me()
-            thunkAPI.dispatch(authActions.loggedIn())
             thunkAPI.dispatch(profileActions.userDataGot(response))
             return response
         } catch (e: any) {

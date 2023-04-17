@@ -10,7 +10,7 @@ import {
     RadioGroup,
     Typography
 } from "@mui/material";
-import classes from "features/learnCards/LearnCards.module.css"
+import classes from "features/cards/learnCards/LearnCards.module.css"
 import {useNavigate, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "app/store";
 import {cardsActions, getCardsTC, rateCardTC} from "features/cards/cardsSlice";
@@ -75,12 +75,12 @@ const LearnCards = () => {
                     Количество попыток ответа на вопрос : {currentCard?.shots}
                 </Typography>
                 <Typography>
-                    Question: {currentCard?.question}
+                    Question: {currentCard?.questionImg ? <img src={currentCard.questionImg} alt=""/> : currentCard?.question}
                 </Typography>
                 {showAnswer ?
                     <>
                         <Typography>
-                            Answer : {currentCard?.answer}
+                            Answer : {currentCard?.answerImg ? <img src={currentCard.answerImg} alt=""/> : currentCard?.answer}
                         </Typography>
                         <FormControl>
                             <FormLabel id="demo-controlled-radio-buttons-group">Rate yourself:</FormLabel>

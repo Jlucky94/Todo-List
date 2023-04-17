@@ -10,19 +10,26 @@ type SliderPropsType = {
 }
 const RangeSlider = (props: SliderPropsType) => {
     const dispatch = useAppDispatch()
+
     const [value, setValue] = useState([props.min, props.max])
-    const debouncedValue = useDebounce(value, 500)
+
     const min = useAppSelector(state => state.packs.params.min)
     const max = useAppSelector(state => state.packs.params.max)
+
+    const debouncedValue = useDebounce(value, 500)
+
     const handleChange = (event: React.SyntheticEvent | Event, newValue: number | Array<number>) => {
         setValue(newValue as number[]);
     }
+
     useEffect(() => {
         dispatch(packsActions.setParams({min: value[0], max: value[1], page: 0}))
     }, [debouncedValue[0][0],debouncedValue[0][1]])
+
     useEffect(() => {
         setValue([min, max])
     }, [min, max])
+
     return (
         <div>
             <Box sx={{width: 300}}>

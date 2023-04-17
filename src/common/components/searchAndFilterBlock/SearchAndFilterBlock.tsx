@@ -11,10 +11,11 @@ import RangeSlider from "common/components/rangeSlider/RangeSlider";
 const SearchAndFilterBlock = () => {
     const dispatch = useAppDispatch()
     const userId = useAppSelector(state => state.profile.data._id)
+    const showAllPacks = !useAppSelector(state => state.packs.params.user_id)
     const minCardsCount = useAppSelector(state => state.packs.minCardsCount)
     const maxCardsCount = useAppSelector(state => state.packs.maxCardsCount)
 
-    const [isShowAll, setIsShowAll] = useState(true);
+    const [isShowAll, setIsShowAll] = useState(!showAllPacks);
     const [inputValue, setInputValue] = useState('')
     const debouncedInputValue = useDebounce(inputValue, 500)
 
@@ -27,6 +28,10 @@ const SearchAndFilterBlock = () => {
         setIsShowAll(true)
         dispatch(packsActions.setParams({...packsInitialState.params}))
     }
+
+    useEffect(() => {
+        setIsShowAll(showAllPacks)
+    }, [showAllPacks])
 
     useEffect(() => {
         dispatch(packsActions.setParams({packName: inputValue, page: 0}))

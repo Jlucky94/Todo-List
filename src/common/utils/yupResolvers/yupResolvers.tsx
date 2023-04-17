@@ -21,6 +21,6 @@ export const addNewPackSchema = yup.object().shape({
     packName: yup.string().required('Pack name can not be empty, please enter new name'),
 })
 export const addNewCardSchema = yup.object().shape({
-    question: yup.string().required('Please enter your question'),
+    question: yup.string(),
     answer: yup.string().required('Please enter answer for question'),
 })
