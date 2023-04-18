@@ -24,8 +24,9 @@ const Cards = () => {
         const packName = useAppSelector(state => state.cards.packName)
 
         const [inputValue, setInputValue] = useState('')
-        const debouncedQueryParams = useDebounce(queryParams, 650)
-        const debouncedInputValue = useDebounce(inputValue, 500)
+        const debouncedQueryParams = useDebounce(queryParams, 650)[0]
+        const debouncedInputValue = useDebounce(inputValue, 500)[0]
+
         const learnToPackHandler = () => navigate('/learn/' + packId)
         const backToPackListHandler = () => navigate("/cards/packs")
 
@@ -40,17 +41,16 @@ const Cards = () => {
 
         useEffect(() => {
             dispatch(cardsActions.setParams({cardsPack_id: packId, cardQuestion: inputValue}))
-        }, [debouncedInputValue[0]])
+        }, [debouncedInputValue])
         useEffect(() => {
             dispatch(getCardsTC())
         }, [
-            debouncedQueryParams[0].min,
-            debouncedQueryParams[0].max,
-            debouncedQueryParams[0].sortCards,
-            debouncedQueryParams[0].pageCount,
-            debouncedQueryParams[0].page,
-            debouncedQueryParams[0].cardQuestion,
-
+            debouncedQueryParams.min,
+            debouncedQueryParams.max,
+            debouncedQueryParams.sortCards,
+            debouncedQueryParams.pageCount,
+            debouncedQueryParams.page,
+            debouncedQueryParams.cardQuestion,
         ])
 
 

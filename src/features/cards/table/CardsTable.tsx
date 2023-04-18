@@ -4,7 +4,6 @@ import {useAppDispatch, useAppSelector} from "app/store";
 import {CardType} from "api/cardsAPI";
 import {DeleteCardModal} from "features/cards/modals/deleteCardModal";
 import {EditCardModal} from "features/cards/modals/editCardModal";
-import {packsActions} from "features/packs/packsSlice";
 import {HeadCellType} from "features/packs/table/PacksTable";
 import StarsGrade from "common/components/stars-grade/StarsGrade";
 import {cardsActions} from "features/cards/cardsSlice";

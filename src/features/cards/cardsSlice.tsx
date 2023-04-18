@@ -63,9 +63,7 @@ const cardsSlice = createSlice({
     }
 })
 
-
 export const {reducer: cardsReducer, actions: cardsActions} = cardsSlice
-
 
 export const getCardsTC = createAsyncThunk<
     GetCardsResponseType,

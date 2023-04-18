@@ -24,7 +24,7 @@ const RangeSlider = (props: SliderPropsType) => {
 
     useEffect(() => {
         dispatch(packsActions.setParams({min: value[0], max: value[1], page: 0}))
-    }, [debouncedValue[0][0],debouncedValue[0][1]])
+    }, [debouncedValue[0][0], debouncedValue[0][1]])
 
     useEffect(() => {
         setValue([min, max])

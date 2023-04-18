@@ -1,18 +1,16 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import {IconButton} from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import {ConvertFileToBase64} from "common/convertFileToBase64/ConvertFileToBase64";
 import {useAppDispatch} from "app/store";
 import {appActions} from "app/appSlice";
-import {profileActions, updateProfileDataTC} from "features/profile/profileSlice";
-import defaultUserAvatar from "assets/images/defaultUserAvatar.png"
 
 type Props = {
     img: string
     setImg: (img: string) => void
-    onChange?: (img:string) => void
+    onChange?: (img: string) => void
 }
-const FileInput = ({setImg, img,onChange}: Props) => {
+const FileInput = ({setImg, img, onChange}: Props) => {
     const dispatch = useAppDispatch()
 
 
@@ -23,7 +21,7 @@ const FileInput = ({setImg, img,onChange}: Props) => {
             if (file.size < 4000000) {
                 ConvertFileToBase64(file, (file64: string) => {
                     setImg(file64)
-                    onChange&&onChange(file64)
+                    onChange && onChange(file64)
                 })
             } else {
                 dispatch(appActions.setError({error: 'Файл слишком большого размера'}))

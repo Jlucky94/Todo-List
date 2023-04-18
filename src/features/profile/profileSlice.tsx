@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {authAPI, UpdateProfileRequestType, UpdateProfileResponseType, UserDataResponseType} from "../../api/authAPI";
-import {AsyncConfigType} from "../../app/appSlice";
-import {errorUtils} from "../../common/utils/error-utils";
+import {authAPI, UpdateProfileRequestType, UpdateProfileResponseType, UserDataResponseType} from "api/authAPI";
+import {AsyncConfigType} from "app/appSlice";
+import {errorUtils} from "common/utils/error-utils";
 
 
 export const profileInitialState = {
@@ -29,7 +29,7 @@ export const profileSlice = createSlice({
     name: 'profile',
     initialState: profileInitialState,
     reducers: {
-        userDataGot: (state: InitialStateType, action: PayloadAction<UserDataResponseType>) => {
+        userDataSet: (state: InitialStateType, action: PayloadAction<UserDataResponseType>) => {
             state.data = action.payload
         },
         profileUpdated: (state: InitialStateType, action: PayloadAction<{ name: string, avatar: string }>) => {
@@ -44,8 +44,8 @@ export const {reducer: profileReducer, actions: profileActions} = profileSlice
 export const updateProfileDataTC = createAsyncThunk<
     UpdateProfileResponseType,
     Partial<UpdateProfileRequestType>,
-    AsyncConfigType
->('/profile/updateProfileData',
+    AsyncConfigType>
+('/profile/updateProfileData',
     async (data: Partial<UpdateProfileRequestType>, thunkAPI) => {
         const ava = thunkAPI.getState().profile.data.avatar
         const name = thunkAPI.getState().profile.data.name

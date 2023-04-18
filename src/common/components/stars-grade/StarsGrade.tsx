@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
-import {Rating, Typography} from "@mui/material";
+import {Rating} from "@mui/material";
 
 type Props = {
-    grade:number
+    grade: number
 }
 
-const StarsGrade:FC<Props> = ({grade}) => {
+const StarsGrade: FC<Props> = ({grade}) => {
 
 
     return (

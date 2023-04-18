@@ -31,10 +31,11 @@ export const authSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(loginTC.pending, (state) => {
-            state.isLoading = true
-            state.error = null
-        })
+        builder
+            .addCase(loginTC.pending, (state) => {
+                state.isLoading = true
+                state.error = null
+            })
             .addCase(loginTC.fulfilled, (state) => {
                 state.isLoading = false
                 state.error = null
@@ -43,9 +44,10 @@ export const authSlice = createSlice({
                 state.isLoading = false
                 state.error = action.payload as string
             })
-            .addCase(getAuthUserDataTC.fulfilled,state => {
+            .addCase(getAuthUserDataTC.fulfilled, state => {
                 state.isAuth = true
             })
+
 
     }
 })
@@ -58,12 +60,12 @@ export const getAuthUserDataTC = createAsyncThunk<UserDataResponseType, void, As
     async (_, thunkAPI) => {
         try {
             const response = await authAPI.me()
-            thunkAPI.dispatch(profileActions.userDataGot(response))
+            thunkAPI.dispatch(profileActions.userDataSet(response))
             return response
         } catch (e: any) {
             return thunkAPI.rejectWithValue(e.response.data.error)
         } finally {
-            thunkAPI.dispatch(appActions.initialization({isInit: true}))
+            thunkAPI.dispatch(appActions.initIsDone({isInit: true}))
         }
     })
 export const loginTC = createAsyncThunk<UserDataResponseType & { info: string }, LoginRequestDataType, AsyncConfigType>
@@ -72,7 +74,7 @@ export const loginTC = createAsyncThunk<UserDataResponseType & { info: string },
         try {
             const response = await authAPI.login(data)
             thunkAPI.dispatch(authActions.loggedIn())
-            thunkAPI.dispatch(profileActions.userDataGot(response))
+            thunkAPI.dispatch(profileActions.userDataSet(response))
             return {...response, info: 'Authorization was successful!'}
         } catch (e) {
             const error = errorUtils(e)
@@ -85,7 +87,7 @@ export const logoutTC = createAsyncThunk<InfoResponseType, void, AsyncConfigType
         try {
             const response = await authAPI.logout()
             thunkAPI.dispatch(authActions.loggedOut())
-            thunkAPI.dispatch(profileActions.userDataGot(profileInitialState.data))
+            thunkAPI.dispatch(profileActions.userDataSet(profileInitialState.data))
             return ({info: 'Logout done'})
         } catch (e) {
             const error = errorUtils(e)

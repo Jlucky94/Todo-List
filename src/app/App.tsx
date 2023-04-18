@@ -23,7 +23,7 @@ function App() {
     const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(getAuthUserDataTC())
-    },   [])
+    }, [])
     if (!isInit) {
         return <Preloader/>
     }

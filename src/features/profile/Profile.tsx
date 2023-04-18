@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from "app/store";
-import styles from "./Profile.module.css"
 import {logoutTC} from "features/auth/authSlice";
 import {Controller, useForm} from "react-hook-form";
 import {updateProfileDataTC} from "./profileSlice";
@@ -19,7 +18,7 @@ const Profile = () => {
         const isLoading = useAppSelector(state => state.app.status)
         const userData = useAppSelector(state => state.profile.data)
 
-        const [editMode, setEditMode] = useState<boolean>(false)
+        const [editMode, setEditMode] = useState(false)
 
         const {control, handleSubmit, formState: {errors}} = useForm<ChangeProfileData>();
 

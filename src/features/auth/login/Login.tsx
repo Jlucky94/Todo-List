@@ -13,21 +13,22 @@ import {loginTC} from "features/auth/authSlice";
 
 
 const Login = () => {
+
         const dispatch = useAppDispatch()
         const navigate = useNavigate()
 
         const isLoading = useAppSelector(state => state.app.status)
-        const isAuth = useAppSelector<boolean>(state => state.auth.isAuth)
-
+        const isAuth = useAppSelector(state => state.auth.isAuth)
 
         const {
             control,
             handleSubmit,
             formState: {errors}
         } = useForm<LoginRequestDataType>({resolver: yupResolver(loginSchema)});
+
         const onSubmit = handleSubmit((data) => {
             dispatch(loginTC(data))
-        });
+        })
         const onClickHandler = () => navigate('/registration')
 
         if (isAuth) {
@@ -78,8 +79,7 @@ const Login = () => {
                                 <div>
                                     Don't have an account?
                                 </div>
-                                <Button type="button" variant={'contained'} onClick={onClickHandler}
-                                >
+                                <Button type="button" variant={'contained'} onClick={onClickHandler}>
                                     Sign Up
                                 </Button>
                                 <div>

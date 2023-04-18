@@ -75,12 +75,14 @@ const LearnCards = () => {
                     Количество попыток ответа на вопрос : {currentCard?.shots}
                 </Typography>
                 <Typography>
-                    Question: {currentCard?.questionImg ? <img src={currentCard.questionImg} alt=""/> : currentCard?.question}
+                    Question: {currentCard?.questionImg ?
+                    <img src={currentCard.questionImg} alt=""/> : currentCard?.question}
                 </Typography>
                 {showAnswer ?
                     <>
                         <Typography>
-                            Answer : {currentCard?.answerImg ? <img src={currentCard.answerImg} alt=""/> : currentCard?.answer}
+                            Answer : {currentCard?.answerImg ?
+                            <img src={currentCard.answerImg} alt=""/> : currentCard?.answer}
                         </Typography>
                         <FormControl>
                             <FormLabel id="demo-controlled-radio-buttons-group">Rate yourself:</FormLabel>

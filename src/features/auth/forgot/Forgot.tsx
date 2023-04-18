@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch} from "../../../app/store";
+import {useAppDispatch} from "app/store";
 import {forgotTC} from "../authSlice";
 import {Link} from "react-router-dom";
 import {Button, Container, FormGroup, Paper, TextField, Typography} from "@mui/material";
-import classes from "../login/Login.module.css";
+import classes from "features/auth/login/Login.module.css";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {forgotSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {forgotSchema} from "common/utils/yupResolvers/yupResolvers";
 
 export type ForgotFormData = {
     email: string
@@ -15,18 +15,17 @@ export type ForgotFormData = {
 };
 
 const Forgot = () => {
+
         const dispatch = useAppDispatch()
-        const [emailIsSent, setEmailIsSent] = useState<boolean>(false)
+
         const {
             control,
             handleSubmit,
             formState: {errors},
-        } = useForm<ForgotFormData>({resolver: yupResolver(forgotSchema)});
+        } = useForm<ForgotFormData>({resolver: yupResolver(forgotSchema)})
+
         const onSubmit = handleSubmit(data => {
-            const response = dispatch(forgotTC({email: data.email}))
-            response.then(response => {
-                response.meta.requestStatus === "fulfilled" && setEmailIsSent(true)
-            })
+            dispatch(forgotTC({email: data.email}))
         });
 
 
@@ -66,10 +65,6 @@ const Forgot = () => {
                             </FormGroup>
                             {/*</FormControl>*/}
                         </form>
-                        {emailIsSent &&
-                            <div>
-                                Further instructions have been successfully sent to your email.
-                            </div>}
                     </Paper>
                 </Container>
             </div>

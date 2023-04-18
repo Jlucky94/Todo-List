@@ -11,7 +11,7 @@ import FileInput from "common/fileInput/FileInput";
 type AddNewCardType = {
     question: string
     answer: string
-    questionImg:string
+    questionImg: string
 }
 type Props = {
     cardPack_id: string
@@ -38,7 +38,7 @@ export const AddNewCardModal: FC<Props> = ({cardPack_id}) => {
                 cardsPack_id: cardPack_id,
                 question: data.question,
                 answer: data.answer,
-                questionImg:data.questionImg
+                questionImg: data.questionImg
             }
         }))
         console.log(data)

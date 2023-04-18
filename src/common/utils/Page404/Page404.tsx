@@ -7,7 +7,8 @@ const Page404 = () => {
     const error404 = params.error404
     return (
         <Typography>
-            <Typography fontSize={200} component={"span"} style={{fontWeight: "bold"}}>404.</Typography> That’s an error.
+            <Typography fontSize={200} component={"span"} style={{fontWeight: "bold"}}>404.</Typography> That’s an
+            error.
             <Typography>The requested URL /{error404} was not found on this server. That’s all we know.</Typography>
         </Typography>
     );

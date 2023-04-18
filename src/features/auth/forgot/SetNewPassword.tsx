@@ -1,13 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {Controller, useForm} from "react-hook-form";
-import {useAppDispatch} from "../../../app/store";
-import {setNewPasswordTC} from "../authSlice";
+import {useAppDispatch, useAppSelector} from "app/store";
 import {Link, useNavigate, useParams} from "react-router-dom";
-import PasswordInput from "../login/passwordInput/PasswordInput";
-import classes from "../login/Login.module.css";
 import {Button, Container, FormGroup, Paper, Typography} from "@mui/material";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {recoveryPassSchema} from "../../../common/utils/yupResolvers/yupResolvers";
+import {recoveryPassSchema} from "common/utils/yupResolvers/yupResolvers";
+import {appActions} from "app/appSlice";
+import {setNewPasswordTC} from "features/auth/authSlice";
+import PasswordInput from "features/auth/login/passwordInput/PasswordInput";
+import classes from "features/auth/login/Login.module.css";
 
 export type SetNewPassForm = {
     password: string
@@ -15,28 +16,33 @@ export type SetNewPassForm = {
 };
 
 const SetNewPassword = () => {
-        const [newPasswordIsSet, setNewPasswordIsSet] = useState<boolean>(false)
+
+        const dispatch = useAppDispatch();
+
+        const newPassIsSend = useAppSelector(state => state.app.newPassIsSend)
+
         const params = useParams()
         const navigate = useNavigate()
+
         const token = params.token as string
-        const dispatch = useAppDispatch()
+
         const {
             control,
             handleSubmit,
             formState: {errors},
-        } = useForm<SetNewPassForm>({resolver: yupResolver(recoveryPassSchema)});
+        } = useForm<SetNewPassForm>({resolver: yupResolver(recoveryPassSchema)})
+
         const onSubmit = handleSubmit(data => {
-            const response = dispatch(setNewPasswordTC({password: data.password, resetPasswordToken: token}))
-            response.then(response => {
-                response.meta.requestStatus === "fulfilled" && setNewPasswordIsSet(true)
-            })
+            dispatch(setNewPasswordTC({password: data.password, resetPasswordToken: token}))
         });
 
         useEffect(() => {
-            newPasswordIsSet && setTimeout(() => {
+            newPassIsSend && setTimeout(() => {
                 navigate('/login')
+                dispatch(appActions.newPassIsSendReset())
             }, 5000)
-        }, [newPasswordIsSet])
+        }, [newPassIsSend])
+
         return (
             <div>
                 <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
@@ -78,8 +84,6 @@ const SetNewPassword = () => {
                                 </Link>
                             </FormGroup>
                         </form>
-                        {newPasswordIsSet &&
-                            <div>New password has been set, you will be redirected to login page in few seconds</div>}
                     </Paper>
                 </Container>
             </div>

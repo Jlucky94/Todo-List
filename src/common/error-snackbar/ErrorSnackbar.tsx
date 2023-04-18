@@ -1,8 +1,8 @@
 import React, {forwardRef} from 'react'
 import MuiAlert, {AlertProps} from '@mui/material/Alert';
-import {useAppDispatch, useAppSelector} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "app/store";
 import Snackbar from '@mui/material/Snackbar'
-import {appActions} from "../../app/appSlice";
+import {appActions} from "app/appSlice";
 
 const Alert = forwardRef<HTMLDivElement, AlertProps>((props, ref) => {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />
@@ -16,7 +16,7 @@ export function ErrorSnackbar() {
         if (reason === 'clickaway') {
             return
         }
-        dispatch(appActions.clearInfoMessages())
+        dispatch(appActions.infoMsgCleared())
     }
 
     return (

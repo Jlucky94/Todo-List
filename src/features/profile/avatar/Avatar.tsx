@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import styles from "features/profile/Profile.module.css";
 import defaultUserAvatar from "assets/images/defaultUserAvatar.png";
-import FileInput from "common/fileInput/FileInput";
 import {appActions} from "app/appSlice";
 import {useAppDispatch, useAppSelector} from "app/store";
 import ChangeAvaModal from "features/profile/avatar/ChangeAvaModal";

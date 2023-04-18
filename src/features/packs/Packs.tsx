@@ -20,7 +20,7 @@ const Packs = () => {
         const totalPacksCount = useAppSelector(state => state.packs.cardPacksTotalCount)
         const packsPageSize = useAppSelector(state => state.packs.params.pageCount)
 
-        const debouncedQueryParams = useDebounce(queryParams, 650)
+        const debouncedQueryParams = useDebounce(queryParams, 650)[0]
 
         const [searchParams, setSearchParams] = useSearchParams()
 
@@ -44,7 +44,7 @@ const Packs = () => {
 
         useEffect(() => {
             dispatch(packsActions.setParams(params))
-        },[])
+        }, [])
 
         useEffect(() => {
             setSearchParams({
@@ -59,14 +59,13 @@ const Packs = () => {
         }, [queryParams])
 
         useEffect(() => {
-            console.log(debouncedQueryParams[0])
             dispatch(getPacksTC())
         }, [
-            debouncedQueryParams[0].min,
-            debouncedQueryParams[0].max,
-            debouncedQueryParams[0].user_id,
-            debouncedQueryParams[0].sortPacks,
-            debouncedQueryParams[0].page
+            debouncedQueryParams.min,
+            debouncedQueryParams.max,
+            debouncedQueryParams.user_id,
+            debouncedQueryParams.sortPacks,
+            debouncedQueryParams.page
         ])
 
 

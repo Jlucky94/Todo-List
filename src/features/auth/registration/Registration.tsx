@@ -17,20 +17,23 @@ export type RegistrationFormData = {
 };
 
 const Registration = () => {
+
         const isAuth = useAppSelector(state => state.auth.isAuth)
         const isLoading = useAppSelector(state => state.app.status)
+        const registrationIsDone = useAppSelector(state => state.app.registrationIsDone)
+
         const navigate = useNavigate()
+
         const dispatch = useAppDispatch()
+
         const {
             control,
             handleSubmit,
             formState: {errors},
-        } = useForm<RegistrationFormData>({resolver: yupResolver(registrationSchema)});
+        } = useForm<RegistrationFormData>({resolver: yupResolver(registrationSchema)})
+
         const onSubmit = handleSubmit(data => {
-            const response = dispatch(registrationTC({email: data.email, password: data.password}))
-            response.then(response => {
-                response.meta.requestStatus === "fulfilled" && navigate('/login')
-            })
+            dispatch(registrationTC({email: data.email, password: data.password}))
 
         });
         const onClickHandler = () => navigate('/login')
@@ -38,6 +41,10 @@ const Registration = () => {
         if (isAuth) {
             return <Navigate to={'/profile'}/>
         }
+        if (registrationIsDone) {
+            return <Navigate to={'/login'}/>
+        }
+
         return (
             <div>
                 <Container className={classes.formContainer} style={{display: 'flex', flexDirection: 'column'}}>
