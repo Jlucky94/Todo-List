@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/friday-project/static/css/main.f628f830.css",
-    "main.js": "/friday-project/static/js/main.51e9b58c.js",
-    "static/media/no-image.jpg": "/friday-project/static/media/no-image.9de13b2877c5a30c2b29.jpg",
-    "index.html": "/friday-project/index.html",
-    "main.f628f830.css.map": "/friday-project/static/css/main.f628f830.css.map",
-    "main.51e9b58c.js.map": "/friday-project/static/js/main.51e9b58c.js.map"
+    "main.css": "/learning-with-cards/static/css/main.f628f830.css",
+    "main.js": "/learning-with-cards/static/js/main.e3210bf6.js",
+    "static/media/no-image.jpg": "/learning-with-cards/static/media/no-image.9de13b2877c5a30c2b29.jpg",
+    "index.html": "/learning-with-cards/index.html",
+    "main.f628f830.css.map": "/learning-with-cards/static/css/main.f628f830.css.map",
+    "main.e3210bf6.js.map": "/learning-with-cards/static/js/main.e3210bf6.js.map"
   },
   "entrypoints": [
     "static/css/main.f628f830.css",
-    "static/js/main.51e9b58c.js"
+    "static/js/main.e3210bf6.js"
   ]
 }
